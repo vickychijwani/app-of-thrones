@@ -7,6 +7,9 @@
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+
+        <!-- enable activity transitions -->
+        <item name="android:windowActivityTransitions">true</item>
     </style>
 
 </resources>

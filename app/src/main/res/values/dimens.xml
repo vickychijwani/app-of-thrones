@@ -4,10 +4,18 @@
     <dimen name="padding_inline">4dp</dimen>
     <dimen name="padding_default">8dp</dimen>
     <dimen name="padding_large">16dp</dimen>
-    <dimen name="padding_ultralarge">40dp</dimen>
+    <dimen name="padding_ultralarge">32dp</dimen>
+
+    <!-- special padding to use when drawing under the system bars -->
+    <!-- hate to hard-code these, but even Material Design spec gives the values -->
+    <!-- https://material.google.com/layout/structure.html#structure-system-bars -->
+    <dimen name="padding_status_bar">24dp</dimen>
+    <dimen name="padding_status_bar_plus_large">40dp</dimen>
+    <dimen name="padding_navigation_bar">48dp</dimen>
 
     <!-- view dimensions and spacing -->
     <dimen name="toolbar_height">56dp</dimen>
     <dimen name="tabbar_height">48dp</dimen>
+    <dimen name="desired_wallpaper_width">200dp</dimen>
 
 </resources>

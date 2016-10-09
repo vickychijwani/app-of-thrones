@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
-    tools:context="me.vickychijwani.thrones.ui.LauncherActivity">
+    tools:context="me.vickychijwani.thrones.ui.WallpapersFragment">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -28,7 +28,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:textColor="@color/text_primary"
-                android:text="@string/episode_recaps"
+                android:text="@string/wallpapers"
                 />
 
         </android.support.v7.widget.Toolbar>

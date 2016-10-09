@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
+    tools:context="me.vickychijwani.thrones.ui.WallpaperFullscreenFragment">
+
+    <ImageView
+        android:id="@+id/wallpaper"
+        android:contentDescription="@string/cdesc_wallpaper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:transitionName="wallpaper"
+        tools:src="@color/primary"
+        tools:targetApi="lollipop"
+        />
+
+</FrameLayout>

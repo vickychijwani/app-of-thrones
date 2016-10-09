@@ -1,5 +1,6 @@
 package me.vickychijwani.thrones.util;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
@@ -7,8 +8,11 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
+import android.support.annotation.NonNull;
+import android.util.DisplayMetrics;
 import android.util.LruCache;
 import android.view.Gravity;
+import android.view.WindowManager;
 
 public final class Utility {
 
@@ -76,6 +80,13 @@ public final class Utility {
 
         cubicGradientScrimCache.put(cacheKeyHash, paintDrawable);
         return paintDrawable;
+    }
+
+    public static int getScreenWidth(@NonNull Context context) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        wm.getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics.widthPixels;
     }
 
 }

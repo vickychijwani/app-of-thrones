@@ -14,8 +14,9 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".ui.EpisodesActivity"
-            android:label="@string/app_name">
+            android:name=".ui.LauncherActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar.Transparent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -24,11 +25,21 @@
 
         <activity
             android:name=".ui.SynopsisActivity"
-            android:parentActivityName=".ui.EpisodesActivity"
+            android:parentActivityName=".ui.LauncherActivity"
             android:theme="@style/AppTheme.NoActionBar.Transparent">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.EpisodesActivity"
+                android:value=".ui.LauncherActivity"
+                />
+        </activity>
+
+        <activity
+            android:name=".ui.WallpaperFullscreenActivity"
+            android:parentActivityName=".ui.LauncherActivity"
+            android:theme="@style/AppTheme.NoActionBar.Transparent">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.LauncherActivity"
                 />
         </activity>
 

@@ -217,13 +217,6 @@ public final class HboApi {
     }
 
 
-
-    private static final class WrappedSyncException extends RuntimeException {
-        WrappedSyncException(String message, Throwable cause) {
-            super(message, cause);
-        }
-    }
-
     public interface SyncStatusCallback {
         void onSuccess();
         void onError(@Nullable String message);
