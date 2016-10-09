@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="MyTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorHeight">4dp</item>
+    </style>
+
+</resources>

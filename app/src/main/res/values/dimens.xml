@@ -1,0 +1,13 @@
+<resources>
+
+    <!-- padding -->
+    <dimen name="padding_inline">4dp</dimen>
+    <dimen name="padding_default">8dp</dimen>
+    <dimen name="padding_large">16dp</dimen>
+    <dimen name="padding_ultralarge">40dp</dimen>
+
+    <!-- view dimensions and spacing -->
+    <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="tabbar_height">48dp</dimen>
+
+</resources>

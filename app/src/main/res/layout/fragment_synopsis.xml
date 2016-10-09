@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:id="@+id/content_synopsis"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
+    tools:context="me.vickychijwani.thrones.ui.SynopsisFragment">
+
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/padding_ultralarge">
+
+        <ImageView
+            android:id="@+id/synopsis_image"
+            android:contentDescription="@string/cdesc_episode_image"
+            app:layout_aspectRatio="178%"
+            app:layout_widthPercent="100%"
+            tools:src="@color/primary"
+            />
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="@dimen/padding_large"
+            android:layout_marginStart="@dimen/padding_large"
+            android:layout_marginTop="@dimen/padding_ultralarge"
+            android:clickable="true"
+            android:contentDescription="@string/back"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:srcCompat="@drawable/close"
+            />
+
+        <TextView
+            android:id="@+id/episode_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/synopsis_image"
+            android:layout_marginEnd="@dimen/padding_large"
+            android:layout_marginLeft="@dimen/padding_large"
+            android:layout_marginRight="@dimen/padding_large"
+            android:layout_marginStart="@dimen/padding_large"
+            android:layout_marginTop="@dimen/padding_large"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            tools:text="Season 1, Episode 1"
+            />
+
+        <TextView
+            android:id="@+id/episode_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/episode_number"
+            android:layout_marginEnd="@dimen/padding_large"
+            android:layout_marginLeft="@dimen/padding_large"
+            android:layout_marginRight="@dimen/padding_large"
+            android:layout_marginStart="@dimen/padding_large"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/text_primary"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            tools:text="Winter is Coming"
+            />
+
+        <TextView
+            android:id="@+id/synopsis_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/episode_title"
+            android:layout_marginEnd="@dimen/padding_large"
+            android:layout_marginLeft="@dimen/padding_large"
+            android:layout_marginRight="@dimen/padding_large"
+            android:layout_marginStart="@dimen/padding_large"
+            android:layout_marginTop="@dimen/padding_large"
+            android:lineSpacingMultiplier="1.15"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp"
+            tools:text="Three men of the Night's Watch ride out beyond the Wall after receiving reports that lawless tribes of wildings have been sighted near the border. Will, a slight ranger, verifies this information when he finds the dismembered corpses of the group's men, women and children scattered in a frozen glade. He carries the news back to his comrades, Gared and Ser Waymar Royce, but before they can investigate further, the bodies disappear. As Will searches the area, the forest fills with Royce's screams and the gallop of the group's bolting horses. Will races through the trees and comes face to face with Gared – moments before a shadowy creature with glowing blue eyes severs his friend's head and tosses it at Will's feet."
+            />
+
+    </android.support.percent.PercentRelativeLayout>
+
+</ScrollView>

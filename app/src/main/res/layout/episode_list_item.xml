@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true">
+
+    <ImageView
+        android:id="@+id/episode_image"
+        android:contentDescription="@string/cdesc_episode_image"
+        android:scaleType="centerCrop"
+        app:layout_aspectRatio="178%"
+        app:layout_widthPercent="100%"
+        tools:background="@color/primary"
+        />
+
+    <ImageView
+        android:id="@+id/episode_title_scrim"
+        app:layout_aspectRatio="178%"
+        app:layout_widthPercent="100%"
+        android:layout_gravity="bottom"
+        tools:ignore="ContentDescription"
+        />
+
+    <TextView
+        android:id="@+id/episode_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/padding_large"
+        android:layout_marginEnd="@dimen/padding_large"
+        android:layout_marginLeft="@dimen/padding_large"
+        android:layout_marginRight="@dimen/padding_large"
+        android:layout_marginStart="@dimen/padding_large"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@color/text_primary"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        tools:text="1. The Red Woman"
+        />
+
+</android.support.percent.PercentFrameLayout>

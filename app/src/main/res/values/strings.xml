@@ -1,0 +1,16 @@
+<resources>
+
+    <string name="app_name">App of Thrones</string>
+
+    <!-- episodes -->
+    <string name="season_title">Season %d</string>
+    <string name="season_and_episode_number">Season %1$d, Episode %2$d</string>
+
+    <!-- generic -->
+    <string name="sync_error">Error while syncing data</string>
+    <string name="back">Back</string>
+
+    <!-- content descriptions -->
+    <string name="cdesc_episode_image">Episode image</string>
+
+</resources>
