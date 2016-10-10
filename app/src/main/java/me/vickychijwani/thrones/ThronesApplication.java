@@ -7,16 +7,16 @@ import android.util.Log;
 import com.squareup.picasso.Picasso;
 
 import me.vickychijwani.thrones.network.HboApi;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
+import me.vickychijwani.thrones.network.TvdbApi;
 
 public class ThronesApplication extends Application {
 
     private static ThronesApplication sInstance;
 
-    protected OkHttpClient mOkHttpClient = null;
     protected Picasso mPicasso = null;
+
     protected HboApi mHboApi = null;
+    protected TvdbApi mTvdbApi = null;
 
     public static ThronesApplication getInstance() {
         return sInstance;
@@ -27,26 +27,9 @@ public class ThronesApplication extends Application {
         super.onCreate();
         sInstance = this;
 
-        setupOkHttpClient();
         setupPicasso();
-        setupHboApiService();
-    }
-
-    private void setupOkHttpClient() {
-        if (mOkHttpClient != null) {
-            return;
-        }
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        if (BuildConfig.DEBUG) {
-            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
-        } else {
-            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
-        }
-        mOkHttpClient = new OkHttpClient.Builder()
-                // add your other interceptors …
-                // add logging as last interceptor
-                .addInterceptor(loggingInterceptor)
-                .build();
+        setupHboApi();
+        setupTvdbApi();
     }
 
     protected void setupPicasso() {
@@ -64,11 +47,18 @@ public class ThronesApplication extends Application {
                 .build();
     }
 
-    protected void setupHboApiService() {
+    protected void setupHboApi() {
         if (mHboApi != null) {
             return;
         }
-        mHboApi = new HboApi(mOkHttpClient);
+        mHboApi = new HboApi();
+    }
+
+    protected void setupTvdbApi() {
+        if (mTvdbApi != null) {
+            return;
+        }
+        mTvdbApi = new TvdbApi(getString(R.string.tvdb_api_key));
     }
 
     public Picasso getPicasso() {
@@ -77,6 +67,10 @@ public class ThronesApplication extends Application {
 
     public HboApi getHboApi() {
         return mHboApi;
+    }
+
+    public TvdbApi getTvdbApi() {
+        return mTvdbApi;
     }
 
 }

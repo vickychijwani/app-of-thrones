@@ -47,12 +47,15 @@ public class WallpapersFragment extends Fragment {
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabbar);
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.view_pager);
         tabLayout.setupWithViewPager(viewPager);
-        if (viewPager != null && getActivity() != null) {
+        if (getActivity() != null) {
             List<WallpapersListFragment.Source> wallpaperSources = new ArrayList<>();
             wallpaperSources.add(WallpapersListFragment.Source.BEAUTIFUL_DEATH);
-            wallpaperSources.add(WallpapersListFragment.Source.THE_TVDB);
+            wallpaperSources.add(WallpapersListFragment.Source.THE_TVDB_PORTRAIT);
+            wallpaperSources.add(WallpapersListFragment.Source.THE_TVDB_LANDSCAPE);
             WallpaperCategoriesAdapter wallpaperCategoriesAdapter = new WallpaperCategoriesAdapter(
                     getChildFragmentManager(), wallpaperSources);
+            // this will keep N tabs on each side of the current tab in memory
+            viewPager.setOffscreenPageLimit(2);
             viewPager.setAdapter(wallpaperCategoriesAdapter);
         } else {
             Log.wtf(TAG, "onAttach() was supposed to have been called by now, but it wasn't!");

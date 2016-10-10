@@ -14,7 +14,7 @@ import android.util.LruCache;
 import android.view.Gravity;
 import android.view.WindowManager;
 
-public final class Utility {
+public final class AppUtils {
 
     private static final LruCache<Integer, Drawable> cubicGradientScrimCache = new LruCache<>(10);
 

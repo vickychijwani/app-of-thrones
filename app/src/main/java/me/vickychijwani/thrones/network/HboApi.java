@@ -23,6 +23,7 @@ import me.vickychijwani.thrones.network.entity.HboSeason;
 import me.vickychijwani.thrones.network.entity.HboSeasonList;
 import me.vickychijwani.thrones.network.entity.HboSynopsis;
 import me.vickychijwani.thrones.network.entity.HboSynopsisId;
+import me.vickychijwani.thrones.util.NetworkUtils;
 import okhttp3.OkHttpClient;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -58,7 +59,8 @@ public final class HboApi {
     private final HboViewerGuideService mHboApi;
     private boolean mIsSyncOngoing = false;
 
-    public HboApi(@NonNull OkHttpClient httpClient) {
+    public HboApi() {
+        OkHttpClient httpClient = NetworkUtils.makeHttpClient();
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .registerTypeAdapter(HboSynopsis.class, new HboSynopsis.Deserializer())
@@ -122,7 +124,6 @@ public final class HboApi {
                         if (throwable instanceof WrappedSyncException) {
                             throwable = throwable.getCause();
                         }
-                        Log.e(TAG, throwable.getMessage());
                         Log.e(TAG, Log.getStackTraceString(throwable));
                         syncCallback.onError(throwable.getMessage());
                     }

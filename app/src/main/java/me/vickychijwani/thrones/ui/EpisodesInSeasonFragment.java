@@ -25,7 +25,7 @@ import me.vickychijwani.thrones.R;
 import me.vickychijwani.thrones.ThronesApplication;
 import me.vickychijwani.thrones.data.entity.Episode;
 import me.vickychijwani.thrones.network.HboApi;
-import me.vickychijwani.thrones.util.Utility;
+import me.vickychijwani.thrones.util.AppUtils;
 
 public class EpisodesInSeasonFragment extends Fragment {
 
@@ -96,7 +96,7 @@ public class EpisodesInSeasonFragment extends Fragment {
             mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             mPicasso = picasso;
             mClickListener = clickListener;
-            mTitleScrim = Utility.makeCubicGradientScrimDrawable(0xaa000000, 8, Gravity.BOTTOM);
+            mTitleScrim = AppUtils.makeCubicGradientScrimDrawable(0xaa000000, 8, Gravity.BOTTOM);
             setHasStableIds(true);
         }
 
