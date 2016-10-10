@@ -28,6 +28,11 @@ android {
     }
 }
 
+repositories {
+    // for Picasso snapshot
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+}
+
 dependencies {
     // UI
     compile 'com.android.support:appcompat-v7:24.2.1'
@@ -42,8 +47,7 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2'
+    compile 'com.squareup.picasso:picasso:2.6.0-20161009.170155-29' // FIXME hard-coded snapshot
     compile 'org.jsoup:jsoup:1.9.2'
 
     // utility
