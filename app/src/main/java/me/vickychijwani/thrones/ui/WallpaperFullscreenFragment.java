@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresPermission;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -51,6 +52,16 @@ public class WallpaperFullscreenFragment extends Fragment
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ImageView wallpaperView = (ImageView) view.findViewById(R.id.wallpaper);
 
+        toolbar.setNavigationIcon(VectorDrawableCompat.create(getResources(), R.drawable.close,
+                getActivity() != null ? getActivity().getTheme() : null));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (getActivity() != null) {
+                    getActivity().onBackPressed();
+                }
+            }
+        });
         toolbar.inflateMenu(R.menu.wallpaper);
         toolbar.setOnMenuItemClickListener(this);
 
