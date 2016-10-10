@@ -6,7 +6,7 @@
     <string name="episode_recaps">Episode Recaps</string>
     <string name="wallpapers">Wallpapers</string>
 
-    <!-- urls -->
+    <!-- episodes -->
     <string name="season_title">Season %d</string>
     <string name="season_and_episode_number">Season %1$d, Episode %2$d</string>
 

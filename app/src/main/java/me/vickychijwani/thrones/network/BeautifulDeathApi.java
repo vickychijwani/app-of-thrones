@@ -48,13 +48,18 @@ public final class BeautifulDeathApi {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        mIsSyncOngoing = false;
-                        if (throwable instanceof WrappedSyncException) {
-                            throwable = throwable.getCause();
+                        try {
+                            mIsSyncOngoing = false;
+                            if (throwable instanceof WrappedSyncException) {
+                                throwable = throwable.getCause();
+                            }
+                            Log.e(TAG, throwable.getMessage());
+                            Log.e(TAG, Log.getStackTraceString(throwable));
+                            dataCallback.onError();
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error thrown in onError! FIX THIS!!!");
+                            Log.e(TAG, Log.getStackTraceString(e));
                         }
-                        Log.e(TAG, throwable.getMessage());
-                        Log.e(TAG, Log.getStackTraceString(throwable));
-                        dataCallback.onError();
                     }
                 });
     }

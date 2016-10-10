@@ -56,6 +56,7 @@ public class SynopsisFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             synopsisTextView.setText(Html.fromHtml(synopsisHtml, Html.FROM_HTML_MODE_COMPACT));
         } else {
+            //noinspection deprecation
             synopsisTextView.setText(Html.fromHtml(synopsisHtml));
         }
         closeView.setOnClickListener(new View.OnClickListener() {
