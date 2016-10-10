@@ -8,4 +8,6 @@
 
     <color name="text_primary">@android:color/white</color>
 
+    <color name="wallpaper_toolbar">#4C000000</color>
+
 </resources>

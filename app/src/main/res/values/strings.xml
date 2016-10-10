@@ -10,6 +10,12 @@
     <string name="season_title">Season %d</string>
     <string name="season_and_episode_number">Season %1$d, Episode %2$d</string>
 
+    <!-- wallpapers -->
+    <string name="set_as_wallpaper">Set as Wallpaper</string>
+    <string name="set_wallpaper_succeeded">Wallpaper set!</string>
+    <string name="set_wallpaper_failed">Failed to set wallpaper</string>
+    <string name="set_wallpaper_no_permission">You don\'t have sufficient permissions to change the wallpaper on this device.</string>
+
     <!-- generic -->
     <string name="sync_error">Error while syncing data</string>
     <string name="back">Back</string>

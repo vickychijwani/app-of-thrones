@@ -14,8 +14,16 @@
         android:layout_height="match_parent"
         android:scaleType="fitCenter"
         android:transitionName="wallpaper"
-        tools:src="@color/primary"
         tools:targetApi="lollipop"
+        />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="@dimen/padding_status_bar"
+        android:background="@color/wallpaper_toolbar"
+        android:theme="@style/AppTheme.AppBarOverlay"
         />
 
 </FrameLayout>
