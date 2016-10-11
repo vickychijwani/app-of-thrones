@@ -23,19 +23,26 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import java.io.IOException;
-
 import me.vickychijwani.thrones.R;
 import me.vickychijwani.thrones.ThronesApplication;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 public class WallpaperFullscreenFragment extends Fragment
         implements Toolbar.OnMenuItemClickListener {
 
     public static final String KEY_URL = "key:url";
-    private static final String TAG = "WallpaperFullscreenFragment";
+    private static final String TAG = "WallpaperFullFragment";
 
-    private Target mBitmapTarget = null;
+    private Target mBitmapTargetToSetWallpaper = null;
     private String mUrl;
+
+    private Subscription mRxSubscription = null;
 
     public static WallpaperFullscreenFragment newInstance(@NonNull String url) {
         Bundle args = new Bundle();
@@ -80,6 +87,14 @@ public class WallpaperFullscreenFragment extends Fragment
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mRxSubscription != null && !mRxSubscription.isUnsubscribed()) {
+            mRxSubscription.unsubscribe();
+        }
+    }
+
+    @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_set_wallpaper:
@@ -99,29 +114,15 @@ public class WallpaperFullscreenFragment extends Fragment
             showMessage(R.string.set_wallpaper_no_permission, Snackbar.LENGTH_LONG);
             return;
         }
-        if (mBitmapTarget == null) {
+        if (mBitmapTargetToSetWallpaper == null) {
             // hold a strong reference to the Target to prevent GC
             // http://stackoverflow.com/questions/20181491/use-picasso-to-get-a-callback-with-a-bitmap#comment30114541_20181629
-            mBitmapTarget = new BitmapTarget() {
-                @Override
-                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    try {
-                        wallpaperMgr.setBitmap(bitmap);
-                        showMessage(R.string.set_wallpaper_succeeded, Snackbar.LENGTH_SHORT);
-                    } catch (IOException e) {
-                        showMessage(R.string.set_wallpaper_failed, Snackbar.LENGTH_LONG);
-                    }
-                }
-
-                @Override
-                public void onBitmapFailed(Drawable errorDrawable) {
-                    showMessage(R.string.set_wallpaper_failed, Snackbar.LENGTH_LONG);
-                }
-            };
+            mBitmapTargetToSetWallpaper = new BitmapTargetToSetWallpaper(wallpaperMgr);
         }
+        showMessage(R.string.set_wallpaper_progress, Snackbar.LENGTH_INDEFINITE);
         ThronesApplication.getInstance().getPicasso()
                 .load(mUrl)
-                .into(mBitmapTarget);
+                .into(mBitmapTargetToSetWallpaper);
     }
 
     private void showMessage(@StringRes int message, int duration) {
@@ -130,9 +131,66 @@ public class WallpaperFullscreenFragment extends Fragment
         }
     }
 
-    private static abstract class BitmapTarget implements Target {
+
+
+    private class BitmapTargetToSetWallpaper implements Target {
+
+        private final WallpaperManager mWallpaperManager;
+
+        BitmapTargetToSetWallpaper(@NonNull WallpaperManager wallpaperManager) {
+            mWallpaperManager = wallpaperManager;
+        }
+
+        @Override
+        public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+            if (mRxSubscription != null && !mRxSubscription.isUnsubscribed()) {
+                mRxSubscription.unsubscribe();
+            }
+            mRxSubscription = Observable.just(1)
+                    .map(new Func1<Integer, Boolean>() {
+                        @Override
+                        public Boolean call(Integer integer) {
+                            try {
+                                mWallpaperManager.setBitmap(bitmap);
+                                return true;
+                            } catch (Exception e) {
+                                Log.e(TAG, "Failed to set wallpaper", e);
+                                return false;
+                            }
+                        }
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<Boolean>() {
+                        @Override
+                        public void call(Boolean success) {
+                            if (success) {
+                                showMessage(R.string.set_wallpaper_succeeded, Snackbar.LENGTH_SHORT);
+                            } else {
+                                showMessage(R.string.set_wallpaper_failed, Snackbar.LENGTH_LONG);
+                            }
+                        }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            showMessage(R.string.set_wallpaper_failed, Snackbar.LENGTH_LONG);
+                        }
+                    }, new Action0() {
+                        @Override
+                        public void call() {
+                            mRxSubscription = null;
+                        }
+                    });
+        }
+
+        @Override
+        public void onBitmapFailed(Drawable errorDrawable) {
+            showMessage(R.string.set_wallpaper_failed, Snackbar.LENGTH_LONG);
+        }
+
         @Override
         public void onPrepareLoad(Drawable placeHolderDrawable) {}
+
     }
 
 }
