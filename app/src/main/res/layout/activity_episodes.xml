@@ -20,7 +20,10 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:theme="@style/AppTheme.AppBarOverlay"
-        app:menu="@menu/menu_drawer"
+        app:headerLayout="@layout/nav_header"
+        app:itemIconTint="@color/text_primary"
+        app:itemTextColor="@color/text_primary"
+        app:menu="@menu/nav_main"
         />
 
 </android.support.v4.widget.DrawerLayout>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/action_episode_recaps"
+            android:icon="@drawable/television"
+            android:title="@string/episode_recaps"
+            />
+
+        <item
+            android:id="@+id/action_wallpapers"
+            android:icon="@drawable/wallpapers"
+            android:title="@string/wallpapers"
+            />
+
+    </group>
+
+</menu>

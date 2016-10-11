@@ -32,6 +32,7 @@ public class LauncherActivity extends AppCompatActivity
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navView =  (NavigationView) findViewById(R.id.nav_view);
         navView.setNavigationItemSelectedListener(this);
+        navView.setCheckedItem(R.id.action_episode_recaps);
 
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment == null) {
@@ -48,6 +49,7 @@ public class LauncherActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        item.setChecked(true);
         mDrawerLayout.closeDrawer(GravityCompat.START);
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         Fragment newFragment;
