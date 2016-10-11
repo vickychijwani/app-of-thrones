@@ -1,7 +1,6 @@
 package me.vickychijwani.thrones.data;
 
 import android.net.Uri;
-import android.provider.BaseColumns;
 import android.text.TextUtils;
 
 public final class ThronesContract {
@@ -12,7 +11,7 @@ public final class ThronesContract {
     static final String CONTENT_AUTHORITY = "me.vickychijwani.thrones.provider";
     private static final Uri CONTENT_URI_BASE = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    public static abstract class EpisodeTable implements BaseColumns {
+    public static abstract class EpisodeTable {
         public static final String TABLE_NAME = "episodes";
 
         /** Use if multiple items get returned */
@@ -26,6 +25,9 @@ public final class ThronesContract {
                 .appendPath(EpisodeTable.TABLE_NAME)
                 .build();
 
+        // unique episode id as per HBO Viewer's Guide API
+        public static final String COL_HBO_ID = "hboId";
+
         public static final String COL_NUMBER = "number";
         public static final String COL_SEASON_NUMBER = "seasonNumber";
 
@@ -37,7 +39,7 @@ public final class ThronesContract {
 
         static String createTable() {
             String[] colDefs = new String[] {
-                    _ID + " INTEGER PRIMARY KEY AUTOINCREMENT",
+                    COL_HBO_ID + " INTEGER PRIMARY KEY",
                     COL_NUMBER + " INTEGER NOT NULL",
                     COL_SEASON_NUMBER + " INTEGER NOT NULL",
                     COL_TITLE + " TEXT NOT NULL",

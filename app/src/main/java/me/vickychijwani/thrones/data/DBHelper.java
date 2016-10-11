@@ -62,20 +62,20 @@ final class DBHelper extends SQLiteOpenHelper {
 
     Cursor getEpisode(long episodeId) {
         String sql = "SELECT * FROM " + EpisodeTable.TABLE_NAME
-                + " WHERE " + EpisodeTable._ID + " = " + episodeId;
+                + " WHERE " + EpisodeTable.COL_HBO_ID + " = " + episodeId;
         return getReadableDatabase().rawQuery(sql, null);
     }
 
     long insertOrUpdateEpisode(ContentValues values) {
         SQLiteDatabase db = getWritableDatabase();
-        Cursor cursor = db.query(EpisodeTable.TABLE_NAME, new String[] {EpisodeTable._ID},
+        Cursor cursor = db.query(EpisodeTable.TABLE_NAME, new String[] {EpisodeTable.COL_HBO_ID},
                 EpisodeTable.COL_SEASON_NUMBER + " = ? AND " + EpisodeTable.COL_NUMBER + " = ?",
                 new String[]{String.valueOf(values.getAsInteger(EpisodeTable.COL_SEASON_NUMBER)),
                         String.valueOf(values.getAsInteger(EpisodeTable.COL_NUMBER))},
                 null, null, null);
         try {
             if (cursor.getCount() > 0) {
-                long episodeId = cursor.getLong(cursor.getColumnIndexOrThrow(EpisodeTable._ID));
+                long episodeId = cursor.getLong(cursor.getColumnIndexOrThrow(EpisodeTable.COL_HBO_ID));
                 updateEpisode(episodeId, values);
                 return episodeId;
             }
@@ -89,7 +89,7 @@ final class DBHelper extends SQLiteOpenHelper {
     int updateEpisode(long episodeId, ContentValues values) {
         SQLiteDatabase db = getWritableDatabase();
         return db.updateWithOnConflict(EpisodeTable.TABLE_NAME, values,
-                EpisodeTable._ID + " = ?", new String[]{String.valueOf(episodeId)},
+                EpisodeTable.COL_HBO_ID + " = ?", new String[]{String.valueOf(episodeId)},
                 SQLiteDatabase.CONFLICT_ABORT);
     }
 

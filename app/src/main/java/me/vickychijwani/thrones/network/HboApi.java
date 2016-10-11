@@ -152,6 +152,7 @@ public final class HboApi {
                             .getEpisodeSynopsis(episodeId, synopsisId).execute(), episodeId);
 
                     ContentValues values = new ContentValues();
+                    values.put(EpisodeTable.COL_HBO_ID, episodeId);
                     values.put(EpisodeTable.COL_NUMBER, hboEpisode.getEpisodeNumber());
                     values.put(EpisodeTable.COL_SEASON_NUMBER, hboEpisode.getSeasonNumber());
                     values.put(EpisodeTable.COL_TITLE, hboEpisode.getTitle());
@@ -173,12 +174,12 @@ public final class HboApi {
     private Set<Long> getExistingEpisodeIds() {
         Context context = ThronesApplication.getInstance().getApplicationContext();
         Cursor cursor = context.getContentResolver().query(EpisodeTable.CONTENT_URI_LIST,
-                new String[] {EpisodeTable._ID}, null, null, null);
+                new String[] {EpisodeTable.COL_HBO_ID}, null, null, null);
         Set<Long> haveEpisodeIds = new HashSet<>(cursor != null ? cursor.getCount() : 0);
         if (cursor != null) {
             cursor.moveToPosition(-1);
             while (cursor.moveToNext()) {
-                long id = cursor.getLong(cursor.getColumnIndexOrThrow(EpisodeTable._ID));
+                long id = cursor.getLong(cursor.getColumnIndexOrThrow(EpisodeTable.COL_HBO_ID));
                 haveEpisodeIds.add(id);
             }
             cursor.close();
