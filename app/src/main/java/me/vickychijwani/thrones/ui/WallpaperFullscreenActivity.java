@@ -1,11 +1,10 @@
 package me.vickychijwani.thrones.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import me.vickychijwani.thrones.R;
 
-public class WallpaperFullscreenActivity extends AppCompatActivity {
+public class WallpaperFullscreenActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

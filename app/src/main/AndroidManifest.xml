@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest package="me.vickychijwani.thrones"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- PERMISSIONS -->
+    <!-- for general data access -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!-- for wallpapers feature -->
     <uses-permission android:name="android.permission.SET_WALLPAPER"/>
+    <!-- for SyncAdapter -->
+    <uses-permission
+        android:name="android.permission.AUTHENTICATE_ACCOUNTS"
+        android:maxSdkVersion="22"/>
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
 
+
+    <!-- APP COMPONENTS -->
     <application
         android:name=".ThronesApplication"
         android:allowBackup="true"
@@ -44,12 +56,40 @@
                 />
         </activity>
 
+        <!-- NOTE: if you change the content authority, remember to find-and-replace it elsewhere! -->
+        <!-- Can't use @string resource as explained here: http://stackoverflow.com/a/6670656/504611 -->
         <provider
             android:name=".data.ThronesProvider"
             android:authorities="me.vickychijwani.thrones.provider"
             android:exported="false"
+            android:syncable="true"
             />
 
+        <!-- suppressed spurious lint warning: https://code.google.com/p/android/issues/detail?id=224976 -->
+        <service
+            android:name=".network.StubAuthenticatorService"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/stub_authenticator"/>
+        </service>
+
+        <!-- suppressed spurious lint warning: https://code.google.com/p/android/issues/detail?id=224976 -->
+        <service
+            android:name=".network.SyncService"
+            android:exported="true"
+            android:process=":sync"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter"/>
+        </service>
     </application>
 
 </manifest>

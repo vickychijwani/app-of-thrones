@@ -7,6 +7,7 @@ import android.util.Log;
 import com.squareup.picasso.Picasso;
 
 import me.vickychijwani.thrones.network.HboApi;
+import me.vickychijwani.thrones.network.SyncUtils;
 import me.vickychijwani.thrones.network.TvdbApi;
 
 public class ThronesApplication extends Application {
@@ -27,6 +28,7 @@ public class ThronesApplication extends Application {
         super.onCreate();
         sInstance = this;
 
+        SyncUtils.setupSyncAdapter(this);
         setupPicasso();
         setupHboApi();
         setupTvdbApi();

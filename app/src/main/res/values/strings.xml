@@ -17,8 +17,12 @@
     <string name="set_wallpaper_failed">Failed to set wallpaper</string>
     <string name="set_wallpaper_no_permission">You don\'t have sufficient permissions to change the wallpaper on this device.</string>
 
-    <!-- generic -->
+    <!-- sync -->
+    <string name="sync_running">Syncing data…</string>
+    <string name="sync_success">Sync finished</string>
     <string name="sync_error">Error while syncing data</string>
+
+    <!-- generic -->
     <string name="back">Back</string>
 
     <!-- content descriptions -->

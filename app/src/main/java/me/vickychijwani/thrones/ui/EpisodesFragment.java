@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
@@ -24,18 +22,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import me.vickychijwani.thrones.R;
-import me.vickychijwani.thrones.ThronesApplication;
 import me.vickychijwani.thrones.data.ThronesContract;
 import me.vickychijwani.thrones.data.entity.Episode;
 import me.vickychijwani.thrones.data.entity.Season;
-import me.vickychijwani.thrones.network.HboApi;
+import me.vickychijwani.thrones.network.SyncUtils;
 
 public class EpisodesFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -86,6 +82,9 @@ public class EpisodesFragment extends Fragment
             getLoaderManager().restartLoader(EPISODES_LOADER_ID, null, this);
         }
 
+        // initiate a sync
+        SyncUtils.syncNowIfNeeded(getActivity());
+
         return view;
     }
 
@@ -111,13 +110,6 @@ public class EpisodesFragment extends Fragment
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (loader.getId() == EPISODES_LOADER_ID) {
-            if (cursor.getCount() == 0) {
-                // start a network request chain
-                SyncStatusCallback syncCallback = new SyncStatusCallback(new WeakReference<>(this));
-                ThronesApplication.getInstance().getHboApi().fetchAllSeasons(syncCallback);
-                return;
-            }
-
             @SuppressLint("UseSparseArrays")
             Map<Integer, Season> seasons = new TreeMap<>();
             cursor.moveToPosition(-1);
@@ -145,12 +137,6 @@ public class EpisodesFragment extends Fragment
     public void onLoaderReset(Loader<Cursor> loader) {
         mSeasonsAdapter.setSeasons(new ArrayList<Season>());
         mSeasonsAdapter.notifyDataSetChanged();
-    }
-
-    public void showSyncError() {
-        if (getView() != null) {
-            Snackbar.make(getView(), R.string.sync_error, Snackbar.LENGTH_LONG).show();
-        }
     }
 
 
@@ -195,31 +181,6 @@ public class EpisodesFragment extends Fragment
         @Override
         public int getCount() {
             return mSeasons.size();
-        }
-    }
-
-
-    private static class SyncStatusCallback implements HboApi.SyncStatusCallback {
-        private final WeakReference<EpisodesFragment> mFragmentRef;
-
-        SyncStatusCallback(WeakReference<EpisodesFragment> fragmentRef) {
-            this.mFragmentRef = fragmentRef;
-        }
-
-        @Override
-        public void onSuccess() {
-            EpisodesFragment fragment = mFragmentRef.get();
-            if (fragment != null) {
-                fragment.getLoaderManager().restartLoader(EPISODES_LOADER_ID, null, fragment);
-            }
-        }
-
-        @Override
-        public void onError(@Nullable String message) {
-            EpisodesFragment fragment = mFragmentRef.get();
-            if (fragment != null) {
-                fragment.showSyncError();
-            }
         }
     }
 

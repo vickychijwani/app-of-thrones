@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- NOTE: if you change the content authority, remember to find-and-replace it elsewhere! -->
+<!-- Can't use @string resource as explained here: http://stackoverflow.com/a/6670656/504611 -->
+<sync-adapter
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:contentAuthority="me.vickychijwani.thrones.provider"
+    android:accountType="@string/sync_account_type"
+    android:userVisible="false"
+    android:supportsUploading="false"
+    android:allowParallelSyncs="false"
+    android:isAlwaysSyncable="true"
+    />

@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
-import android.util.Log;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -29,11 +28,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public final class HboApi {
 
@@ -91,48 +85,12 @@ public final class HboApi {
                 .replaceAll("<p( [^>]*)?>[ ]*</p>", "");
     }
 
-    public void fetchAllSeasons(@NonNull final SyncStatusCallback syncCallback) {
+    @WorkerThread
+    void fetchAllSeasonsSync() throws WrappedSyncException {
         if (mIsSyncOngoing) {
             return;
         }
         mIsSyncOngoing = true;
-        Observable.just(1)
-                .map(new Func1<Integer, Boolean>() {
-                    @Override
-                    public Boolean call(Integer integer) {
-                        return fetchAllSeasonsSync();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Boolean>() {
-                    @Override
-                    public void call(Boolean success) {
-                        mIsSyncOngoing = false;
-                        if (success) {
-                            syncCallback.onSuccess();
-                        } else {
-                            String message = "Sync failed for unknown reason";
-                            Log.e(TAG, message);
-                            syncCallback.onError(message);
-                        }
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        mIsSyncOngoing = false;
-                        if (throwable instanceof WrappedSyncException) {
-                            throwable = throwable.getCause();
-                        }
-                        Log.e(TAG, Log.getStackTraceString(throwable));
-                        syncCallback.onError(throwable.getMessage());
-                    }
-                });
-    }
-
-    @SuppressLint("DefaultLocale")
-    @WorkerThread
-    private boolean fetchAllSeasonsSync() throws WrappedSyncException {
         try {
             Set<Long> haveEpisodeIds = getExistingEpisodeIds();
             HboSeasonList hboSeasonList = handleSeasonsResponse(mHboApi.getSeasons().execute());
@@ -167,8 +125,10 @@ public final class HboApi {
         } catch (Throwable e) {
             // throw an unchecked exception, the Observable will relay it on
             throw new WrappedSyncException("Failed to sync data", e);
+        } finally {
+            mIsSyncOngoing = false;
         }
-        return true;
+        return;
     }
 
     private Set<Long> getExistingEpisodeIds() {
@@ -216,12 +176,6 @@ public final class HboApi {
                     synopsisResponse.code()));
         }
         return synopsisResponse.body();
-    }
-
-
-    public interface SyncStatusCallback {
-        void onSuccess();
-        void onError(@Nullable String message);
     }
 
 }

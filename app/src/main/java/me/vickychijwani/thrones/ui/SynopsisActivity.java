@@ -1,12 +1,11 @@
 package me.vickychijwani.thrones.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import me.vickychijwani.thrones.R;
 import me.vickychijwani.thrones.data.entity.Episode;
 
-public class SynopsisActivity extends AppCompatActivity {
+public class SynopsisActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
