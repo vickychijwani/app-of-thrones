@@ -3,6 +3,7 @@ package me.vickychijwani.thrones.data;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,7 +11,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.squareup.picasso.Picasso;
+
 import me.vickychijwani.thrones.data.ThronesContract.EpisodeTable;
+import me.vickychijwani.thrones.network.SyncUtils;
 
 
 public final class ThronesProvider extends ContentProvider {
@@ -27,10 +31,33 @@ public final class ThronesProvider extends ContentProvider {
         sUriMatcher = buildUriMatcher();
     }
 
+    // getContext() cannot be null in onCreate(), see getContext() documentation
+    @SuppressWarnings("ConstantConditions")
     @Override
     public boolean onCreate() {
+        /**
+         * Doing application initialization here because it's called only once,
+         * on app startup, and *only from the main thread*. This is unlike
+         * Application#onCreate() which is called from every process (e.g.
+         * a SyncAdapter process)
+         */
+        INIT_APP(getContext());
+
         mDbHelper = new DBHelper(getContext());
         return true;
+    }
+
+    private static void INIT_APP(@NonNull Context context) {
+        SyncUtils.setupSyncAdapter(context);
+        Picasso.setSingletonInstance(new Picasso.Builder(context)
+                .listener(new Picasso.Listener() {
+                    @Override
+                    public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+                        Log.e("Picasso", "Failed to load image: " + uri + "\n"
+                                + Log.getStackTraceString(exception));
+                    }
+                })
+                .build());
     }
 
     @Nullable

@@ -24,7 +24,6 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import me.vickychijwani.thrones.R;
-import me.vickychijwani.thrones.ThronesApplication;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -77,7 +76,7 @@ public class WallpaperFullscreenFragment extends Fragment
             Log.wtf(TAG, "This isn't supposed to happen!");
             return view;
         }
-        ThronesApplication.getInstance().getPicasso()
+        Picasso.with(getActivity())
                 .load(mUrl)
                 .fit()
                 .centerInside()
@@ -120,7 +119,7 @@ public class WallpaperFullscreenFragment extends Fragment
             mBitmapTargetToSetWallpaper = new BitmapTargetToSetWallpaper(wallpaperMgr);
         }
         showMessage(R.string.set_wallpaper_progress, Snackbar.LENGTH_INDEFINITE);
-        ThronesApplication.getInstance().getPicasso()
+        Picasso.with(getActivity())
                 .load(mUrl)
                 .into(mBitmapTargetToSetWallpaper);
     }

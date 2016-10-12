@@ -20,7 +20,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 import me.vickychijwani.thrones.BuildConfig;
-import me.vickychijwani.thrones.ThronesApplication;
 import me.vickychijwani.thrones.pref.AppState;
 
 // Handles data transfer between server and app, using the Android syncadapter framework.
@@ -49,6 +48,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private static final long MIN_SYNC_INTERVAL = 60 * 60;
 
     private ContentResolver mContentResolver;
+    private HboApi mHboApi = null;
 
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -78,10 +78,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             return;
         }
 
+        if (mHboApi == null) {
+            mHboApi = new HboApi(getContext());
+        }
+
         Log.i(TAG, "SyncAdapter#onPerformSync()");
         try {
             broadcastStatus(SYNC_STATUS_RUNNING);
-            ThronesApplication.getInstance().getHboApi().fetchAllSeasonsSync();
+            mHboApi.fetchAllSeasonsSync();
             appState.setLong(AppState.Key.LAST_SYNC_TIME, System.currentTimeMillis());
             broadcastStatus(SYNC_STATUS_SUCCESS);
         } catch (WrappedSyncException wrapped) {

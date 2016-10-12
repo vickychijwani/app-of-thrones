@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.vickychijwani.thrones.R;
-import me.vickychijwani.thrones.ThronesApplication;
 import me.vickychijwani.thrones.network.BeautifulDeathApi;
+import me.vickychijwani.thrones.network.TvdbApi;
 import me.vickychijwani.thrones.network.WallpaperDataCallback;
 import me.vickychijwani.thrones.util.AppUtils;
 
@@ -119,7 +119,7 @@ public class WallpapersListFragment extends Fragment {
             }
         };
         mWallpapersAdapter = new WallpapersAdapter(mUrls, source.getLayout(), inflater,
-                ThronesApplication.getInstance().getPicasso(), clickListener);
+                Picasso.with(getActivity()), clickListener);
         recyclerView.setAdapter(mWallpapersAdapter);
 
         final int desiredColumnWidth = getResources().getDimensionPixelSize(source.getDesiredColumnWidth());
@@ -135,10 +135,10 @@ public class WallpapersListFragment extends Fragment {
                     BeautifulDeathApi.fetchAllPosters(dataCallback);
                     break;
                 case THE_TVDB_PORTRAIT:
-                    ThronesApplication.getInstance().getTvdbApi().fetchAllPosters(dataCallback);
+                    TvdbApi.getInstance(getActivity()).fetchAllPosters(dataCallback);
                     break;
                 case THE_TVDB_LANDSCAPE:
-                    ThronesApplication.getInstance().getTvdbApi().fetchAllFanart(dataCallback);
+                    TvdbApi.getInstance(getActivity()).fetchAllFanart(dataCallback);
                     break;
                 default:
                     Log.wtf(TAG, "You forgot to handle a wallpaper source: " + source.toString());

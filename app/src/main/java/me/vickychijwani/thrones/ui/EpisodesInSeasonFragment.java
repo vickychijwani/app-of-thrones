@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.vickychijwani.thrones.R;
-import me.vickychijwani.thrones.ThronesApplication;
 import me.vickychijwani.thrones.data.entity.Episode;
 import me.vickychijwani.thrones.network.HboApi;
 import me.vickychijwani.thrones.util.AppUtils;
@@ -57,7 +56,7 @@ public class EpisodesInSeasonFragment extends Fragment {
             }
         };
         mEpisodesAdapter = new EpisodesAdapter(getActivity(), episodes,
-                ThronesApplication.getInstance().getPicasso(), episodeClickListener);
+                Picasso.with(getActivity()), episodeClickListener);
         episodesRecyclerView.setAdapter(mEpisodesAdapter);
         episodesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 

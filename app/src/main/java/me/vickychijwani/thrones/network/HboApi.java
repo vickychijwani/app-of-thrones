@@ -15,7 +15,6 @@ import com.google.gson.GsonBuilder;
 import java.util.HashSet;
 import java.util.Set;
 
-import me.vickychijwani.thrones.ThronesApplication;
 import me.vickychijwani.thrones.data.ThronesContract.EpisodeTable;
 import me.vickychijwani.thrones.network.entity.HboEpisode;
 import me.vickychijwani.thrones.network.entity.HboSeason;
@@ -50,10 +49,12 @@ public final class HboApi {
         }
     }
 
+    private final Context mAppContext;
     private final HboViewerGuideService mHboApi;
     private boolean mIsSyncOngoing = false;
 
-    public HboApi() {
+    HboApi(@NonNull Context context) {
+        mAppContext = context.getApplicationContext();
         OkHttpClient httpClient = NetworkUtils.makeHttpClient();
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -118,7 +119,7 @@ public final class HboApi {
                     values.put(EpisodeTable.COL_IMAGE, hboEpisode.getImg());
                     values.put(EpisodeTable.COL_SYNOPSIS, hboSynopsis.getText());
                     values.put(EpisodeTable.COL_SYNOPSIS_IMAGE, hboSynopsis.getImage());
-                    ThronesApplication.getInstance().getContentResolver().insert(
+                    mAppContext.getContentResolver().insert(
                             EpisodeTable.CONTENT_URI_LIST, values);
                 }
             }
@@ -132,8 +133,7 @@ public final class HboApi {
     }
 
     private Set<Long> getExistingEpisodeIds() {
-        Context context = ThronesApplication.getInstance().getApplicationContext();
-        Cursor cursor = context.getContentResolver().query(EpisodeTable.CONTENT_URI_LIST,
+        Cursor cursor = mAppContext.getContentResolver().query(EpisodeTable.CONTENT_URI_LIST,
                 new String[] {EpisodeTable.COL_HBO_ID}, null, null, null);
         Set<Long> haveEpisodeIds = new HashSet<>(cursor != null ? cursor.getCount() : 0);
         if (cursor != null) {

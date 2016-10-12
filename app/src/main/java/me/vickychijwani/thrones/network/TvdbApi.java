@@ -1,6 +1,7 @@
 package me.vickychijwani.thrones.network;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import me.vickychijwani.thrones.R;
 import me.vickychijwani.thrones.network.entity.TvdbApiKey;
 import me.vickychijwani.thrones.network.entity.TvdbImage;
 import me.vickychijwani.thrones.network.entity.TvdbImageList;
@@ -42,6 +44,9 @@ public class TvdbApi {
     private static final String ASSETS_BASE_URL = "http://thetvdb.com/banners/";
     private static final int GAME_OF_THRONES_SERIES_ID = 121361;
 
+    // singleton
+    private static TvdbApi sApi = null;
+
     private enum ImageKeyType {
         POSTER("poster"),
         FANART("fanart"),
@@ -66,7 +71,14 @@ public class TvdbApi {
     private Map<ImageKeyType, Boolean> mIsSyncOngoing = new HashMap<>();
     private Map<ImageKeyType, WallpaperDataCallback> mDeferredRequests = new TreeMap<>();
 
-    public TvdbApi(@NonNull String apiKey) {
+    public static TvdbApi getInstance(@NonNull Context context) {
+        if (sApi == null) {
+            sApi = new TvdbApi(context.getString(R.string.tvdb_api_key));
+        }
+        return sApi;
+    }
+
+    private TvdbApi(@NonNull String apiKey) {
         mApiKey = apiKey;
         setupApiService();
     }

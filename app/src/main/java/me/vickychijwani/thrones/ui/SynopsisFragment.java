@@ -12,8 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import me.vickychijwani.thrones.R;
-import me.vickychijwani.thrones.ThronesApplication;
 import me.vickychijwani.thrones.data.entity.Episode;
 import me.vickychijwani.thrones.network.HboApi;
 
@@ -45,7 +46,7 @@ public class SynopsisFragment extends Fragment {
             Log.wtf(TAG, "This isn't supposed to happen!");
             return view;
         }
-        ThronesApplication.getInstance().getPicasso()
+        Picasso.with(getActivity())
                 .load(HboApi.getImageUrl(episode.synopsisImage, HboApi.ImageSize.LARGE))
                 .fit()
                 .centerCrop()
