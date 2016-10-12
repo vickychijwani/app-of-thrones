@@ -122,7 +122,7 @@ public final class ThronesProvider extends ContentProvider {
                       String[] selectionArgs) {
         Log.i(TAG, "[update] uri: " + uri);
         long updatedId;
-        int numRowsUpdated = 0;
+        int numRowsUpdated;
         switch (sUriMatcher.match(uri)) {
             case EPISODE_WITH_ID:
                 updatedId = ContentUris.parseId(uri);

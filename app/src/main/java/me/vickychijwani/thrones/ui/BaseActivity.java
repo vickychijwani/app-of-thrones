@@ -14,7 +14,7 @@ import me.vickychijwani.thrones.BuildConfig;
 import me.vickychijwani.thrones.R;
 import me.vickychijwani.thrones.network.SyncAdapter;
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     private static final String TAG = "AppCompatActivity";
 

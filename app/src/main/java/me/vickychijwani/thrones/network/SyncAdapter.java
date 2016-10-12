@@ -3,7 +3,6 @@ package me.vickychijwani.thrones.network;
 import android.accounts.Account;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SyncResult;
@@ -47,21 +46,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     // NEVER sync more frequently than this (in seconds)
     private static final long MIN_SYNC_INTERVAL = 60 * 60;
 
-    private ContentResolver mContentResolver;
     private HboApi mHboApi = null;
 
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
-        init(context);
     }
 
     public SyncAdapter(Context context, boolean autoInitialize, boolean allowParallelSyncs) {
         super(context, autoInitialize, allowParallelSyncs);
-        init(context);
-    }
-
-    private void init(Context context) {
-        mContentResolver = context.getContentResolver();
     }
 
     @WorkerThread
