@@ -20,6 +20,7 @@ import java.lang.annotation.RetentionPolicy;
 
 import me.vickychijwani.thrones.BuildConfig;
 import me.vickychijwani.thrones.pref.AppState;
+import me.vickychijwani.thrones.util.CrashLedger;
 
 // Handles data transfer between server and app, using the Android syncadapter framework.
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
@@ -29,7 +30,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public static final String KEY_SYNC_STATUS = "key:SYNC_STATUS";
 
     @StringDef({ SYNC_STATUS_RUNNING, SYNC_STATUS_SUCCESS, SYNC_STATUS_SKIPPED,
-            SYNC_STATUS_FAILED_WILL_RETRY, SYNC_STATUS_FAILED_WONT_RETRY })
+            SYNC_STATUS_FAILED_WILL_RETRY, SYNC_STATUS_FAILED_WONT_RETRY, SYNC_STATUS_CANCELLED })
     @Retention(RetentionPolicy.SOURCE)
     public @interface SyncStatus {}
     public static final String SYNC_STATUS_RUNNING = "sync_status:running";
@@ -37,6 +38,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public static final String SYNC_STATUS_SKIPPED = "sync_status:skipped";
     public static final String SYNC_STATUS_FAILED_WILL_RETRY = "sync_status:failed_will_retry";
     public static final String SYNC_STATUS_FAILED_WONT_RETRY = "sync_status:failed_wont_retry";
+    public static final String SYNC_STATUS_CANCELLED = "sync_status:cancelled";
 
     private static final String TAG = "SyncAdapter";
 
@@ -63,8 +65,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         AppState appState = AppState.getInstance(getContext());
         long lastSyncTime = appState.getLong(AppState.Key.LAST_SYNC_TIME);
         if (System.currentTimeMillis() < lastSyncTime + MIN_SYNC_INTERVAL*1000) {
-            Log.w(TAG, "Skipping sync, last sync was at epoch time = " + lastSyncTime);
-            Log.w(TAG, "Next sync cannot happen before epoch time = " + (lastSyncTime + MIN_SYNC_INTERVAL*1000));
+            CrashLedger.reportNonFatal(new Exception("Testing exceptions in SyncAdapter"));
+            CrashLedger.Log.i(TAG, "Skipping sync, last sync was at epoch time = " + lastSyncTime);
+            CrashLedger.Log.i(TAG, "Next sync cannot happen before epoch time = " + (lastSyncTime + MIN_SYNC_INTERVAL*1000));
             // set nothing on syncResult; we can consider this sync "successful" since the data is fresh
             broadcastStatus(SYNC_STATUS_SKIPPED);
             return;
@@ -82,7 +85,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             broadcastStatus(SYNC_STATUS_SUCCESS);
         } catch (WrappedSyncException wrapped) {
             Throwable e = wrapped.getCause();
-            Log.e(TAG, "Sync failed", e);
+            CrashLedger.reportNonFatal(e);
             if (e instanceof IOException) {
                 // soft error, will be retried
                 syncResult.stats.numIoExceptions++;
@@ -104,8 +107,22 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
 
+    @Override
+    public void onSyncCanceled() {
+        super.onSyncCanceled();
+        CrashLedger.Log.w(TAG, "Sync cancelled");
+        broadcastStatus(SYNC_STATUS_CANCELLED);
+    }
+
+    @Override
+    public void onSyncCanceled(Thread thread) {
+        super.onSyncCanceled();
+        CrashLedger.Log.w(TAG, "Sync cancelled");
+        broadcastStatus(SYNC_STATUS_CANCELLED);
+    }
+
     private void broadcastStatus(@SyncStatus String syncStatus) {
-        Log.i(TAG, "Sync status changed to '" + syncStatus + "'");
+        CrashLedger.Log.i(TAG, "SyncAdapter: sync status changed to '" + syncStatus + "'");
         Intent intent = new Intent();
         intent.setAction(INTENT_ACTION_SYNC_STATUS);
         intent.putExtra(KEY_SYNC_STATUS, syncStatus);

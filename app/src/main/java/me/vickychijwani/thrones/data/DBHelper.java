@@ -7,10 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import me.vickychijwani.thrones.data.ThronesContract.EpisodeTable;
+import me.vickychijwani.thrones.util.CrashLedger;
 
 
 final class DBHelper extends SQLiteOpenHelper {
 
+    private static final String TAG = "DBHelper";
     private static final int DB_VERSION = 1;
     private static final String DB_NAME = "thrones.db";
 
@@ -20,22 +22,26 @@ final class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        CrashLedger.lifecycleEvent(DBHelper.class, "onCreate");
         db.execSQL(EpisodeTable.createTable());
     }
 
     // WARNING!!!
     private void dropDatabaseDANGEROUS(SQLiteDatabase db) {
+        CrashLedger.Log.w(TAG, "Dropping database!!!");
         db.execSQL(EpisodeTable.dropTable());
     }
 
     @Override
     public void onConfigure(SQLiteDatabase db) {
         super.onConfigure(db);
+        CrashLedger.lifecycleEvent(DBHelper.class, "onConfigure");
         db.setForeignKeyConstraintsEnabled(true);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        CrashLedger.lifecycleEvent(DBHelper.class, "onUpgrade");
         // this database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
         dropDatabaseDANGEROUS(db);
@@ -43,14 +49,10 @@ final class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        CrashLedger.lifecycleEvent(DBHelper.class, "onDowngrade");
         // this database is only a cache for online data, so its downgrade policy is
         // to simply to discard the data and start over
         dropDatabaseDANGEROUS(db);
-    }
-
-    @Override
-    public void onOpen(SQLiteDatabase db) {
-        super.onOpen(db);
     }
 
 

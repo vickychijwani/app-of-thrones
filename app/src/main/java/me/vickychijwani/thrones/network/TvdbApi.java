@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -23,6 +22,7 @@ import me.vickychijwani.thrones.network.entity.TvdbApiKey;
 import me.vickychijwani.thrones.network.entity.TvdbImage;
 import me.vickychijwani.thrones.network.entity.TvdbImageList;
 import me.vickychijwani.thrones.network.entity.TvdbToken;
+import me.vickychijwani.thrones.util.CrashLedger;
 import me.vickychijwani.thrones.util.NetworkUtils;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -142,6 +142,7 @@ public class TvdbApi {
                 .subscribe(new Action1<List<String>>() {
                     @Override
                     public void call(List<String> urls) {
+                        CrashLedger.Log.i(TAG, "TVDB request succeeded, got " + urls.size() + " URLs");
                         dataCallback.onSuccess(urls);
                     }
                 }, new Action1<Throwable>() {
@@ -150,7 +151,7 @@ public class TvdbApi {
                         if (throwable instanceof WrappedSyncException) {
                             throwable = throwable.getCause();
                         }
-                        Log.e(TAG, Log.getStackTraceString(throwable));
+                        CrashLedger.reportNonFatal(throwable);
                         dataCallback.onError();
                     }
                 }, new Action0() {
@@ -165,7 +166,7 @@ public class TvdbApi {
         // if we're trying to login, wait for it (even if the token is not null, still
         // wait because we must be retrying the login for a good reason)
         if (mIsLoginOngoing.get()) {
-            Log.d(TAG, "Deferring request for key type = " + imageKeyType.toString());
+            CrashLedger.Log.d(TAG, "Deferring request for key type = " + imageKeyType.toString());
             mDeferredRequests.put(imageKeyType, dataCallback);
             return true;
         }
@@ -181,7 +182,7 @@ public class TvdbApi {
             // actual login attempt
             login();
             mIsLoginOngoing.set(false);
-            Log.d(TAG, "Login done, firing " + mDeferredRequests.size() + " deferred requests now");
+            CrashLedger.Log.d(TAG, "Login done, firing " + mDeferredRequests.size() + " deferred requests now");
             // kick-off deferred requests (in separate threads)
             for (Map.Entry<ImageKeyType, WallpaperDataCallback> deferredRequest : mDeferredRequests.entrySet()) {
                 fetchAllImages(deferredRequest.getKey(), deferredRequest.getValue());

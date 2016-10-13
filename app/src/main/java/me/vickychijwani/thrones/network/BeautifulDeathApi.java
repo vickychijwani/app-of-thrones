@@ -1,7 +1,6 @@
 package me.vickychijwani.thrones.network;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.vickychijwani.thrones.util.CrashLedger;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -43,6 +43,8 @@ public final class BeautifulDeathApi {
                     @Override
                     public void call(List<String> posterUrls) {
                         mIsSyncOngoing = false;
+                        CrashLedger.Log.i(TAG, "Beautiful Death scraping succeeded, got "
+                                + posterUrls.size() + " URLs");
                         dataCallback.onSuccess(posterUrls);
                     }
                 }, new Action1<Throwable>() {
@@ -52,7 +54,7 @@ public final class BeautifulDeathApi {
                         if (throwable instanceof WrappedSyncException) {
                             throwable = throwable.getCause();
                         }
-                        Log.e(TAG, Log.getStackTraceString(throwable));
+                        CrashLedger.reportNonFatal(throwable);
                         dataCallback.onError();
                     }
                 });

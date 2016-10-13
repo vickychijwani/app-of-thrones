@@ -128,7 +128,6 @@ public final class HboApi {
         } finally {
             mIsSyncOngoing = false;
         }
-        return;
     }
 
     private Set<Long> getExistingEpisodeIds() {

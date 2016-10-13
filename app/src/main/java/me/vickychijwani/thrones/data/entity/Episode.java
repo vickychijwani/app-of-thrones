@@ -18,19 +18,7 @@ public final class Episode implements Parcelable {
     public final String synopsis;
     public final String synopsisImage;
 
-    // TODO when you update this, remember to update the Parcelable code + other constructor as well!
-    // use the Builder to construct this
-    private Episode(int number, int seasonNumber, String title, String excerpt, String image,
-                    String synopsis, String synopsisImage) {
-        this.number = number;
-        this.seasonNumber = seasonNumber;
-        this.title = title;
-        this.excerpt = excerpt;
-        this.image = image;
-        this.synopsis = synopsis;
-        this.synopsisImage = synopsisImage;
-    }
-
+    // TODO when you update this, remember to update the Parcelable code, etc as well!
     public Episode(Cursor cursor) {
         this.number = cursor.getInt(cursor.getColumnIndexOrThrow(EpisodeTable.COL_NUMBER));
         this.seasonNumber = cursor.getInt(cursor.getColumnIndexOrThrow(EpisodeTable.COL_SEASON_NUMBER));
@@ -57,6 +45,7 @@ public final class Episode implements Parcelable {
         dest.writeString(this.synopsisImage);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public Episode(Parcel in) {
         this.number = in.readInt();
         this.seasonNumber = in.readInt();
@@ -79,53 +68,9 @@ public final class Episode implements Parcelable {
         }
     };
 
-    public static final class Builder {
-        private int number;
-        private int seasonNumber;
-        private String title;
-        private String excerpt;
-        private String image;
-        private String synopsis;
-        private String synopsisImage;
-
-        public Builder setNumber(int number) {
-            this.number = number;
-            return this;
-        }
-
-        public Builder setSeasonNumber(int seasonNumber) {
-            this.seasonNumber = seasonNumber;
-            return this;
-        }
-
-        public Builder setTitle(String title) {
-            this.title = title;
-            return this;
-        }
-
-        public Builder setExcerpt(String excerpt) {
-            this.excerpt = excerpt;
-            return this;
-        }
-
-        public Builder setImage(String image) {
-            this.image = image;
-            return this;
-        }
-
-        public Builder setSynopsis(String synopsis) {
-            this.synopsis = synopsis;
-            return this;
-        }
-
-        public Builder setSynopsisImage(String synopsisImage) {
-            this.synopsisImage = synopsisImage;
-            return this;
-        }
-
-        public Episode build() {
-            return new Episode(number, seasonNumber, title, excerpt, image, synopsis, synopsisImage);
-        }
+    @Override
+    public String toString() {
+        return "Episode " + seasonNumber + "x" + ((number >= 10) ? number : ("0"+number));
     }
 
 }

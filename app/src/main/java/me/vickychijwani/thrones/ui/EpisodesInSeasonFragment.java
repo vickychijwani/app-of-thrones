@@ -25,10 +25,13 @@ import me.vickychijwani.thrones.R;
 import me.vickychijwani.thrones.data.entity.Episode;
 import me.vickychijwani.thrones.network.HboApi;
 import me.vickychijwani.thrones.util.AppUtils;
+import me.vickychijwani.thrones.util.CrashLedger;
 
 public class EpisodesInSeasonFragment extends Fragment {
 
     public static final String KEY_EPISODES = "episodes";
+
+    private static final String TAG = "EpisodesInSeasonFragment";
 
     private EpisodesAdapter mEpisodesAdapter;
 
@@ -40,7 +43,7 @@ public class EpisodesInSeasonFragment extends Fragment {
 
         List<Episode> episodes = getArguments().getParcelableArrayList(KEY_EPISODES);
         if (episodes == null) {
-            episodes = new ArrayList<>();
+            throw new IllegalArgumentException("Received null episode list");
         }
         View.OnClickListener episodeClickListener = new View.OnClickListener() {
             @Override
@@ -48,6 +51,7 @@ public class EpisodesInSeasonFragment extends Fragment {
                 int pos = episodesRecyclerView.getChildLayoutPosition(view);
                 if (pos == RecyclerView.NO_POSITION) return;
                 Episode episode = mEpisodesAdapter.getItem(pos);
+                CrashLedger.navigationEvent("Episode list", "Synopsis for: " + episode.toString());
                 Intent intent = new Intent(EpisodesInSeasonFragment.this.getActivity(), SynopsisActivity.class);
                 intent.putExtra(SynopsisFragment.KEY_EPISODE, episode);
                 Bundle activityOptions = ActivityOptions.makeScaleUpAnimation(view, 0, 0,
@@ -63,7 +67,7 @@ public class EpisodesInSeasonFragment extends Fragment {
         return view;
     }
 
-    public static EpisodesInSeasonFragment newInstance(List<Episode> episodes) {
+    public static EpisodesInSeasonFragment newInstance(@NonNull List<Episode> episodes) {
         Bundle args = new Bundle();
         args.putParcelableArrayList(KEY_EPISODES, new ArrayList<>(episodes));
         EpisodesInSeasonFragment fragment = new EpisodesInSeasonFragment();

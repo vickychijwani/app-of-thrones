@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import me.vickychijwani.thrones.R;
+import me.vickychijwani.thrones.util.CrashLedger;
 
 public class LauncherActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -37,9 +38,11 @@ public class LauncherActivity extends BaseActivity
         if (fragment == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             if (mEpisodesFragment == null) {
+                CrashLedger.Log.d(TAG, "LauncherActivity#onCreate: Creating new EpisodesFragment");
                 mEpisodesFragment = EpisodesFragment.newInstance();
                 ft.replace(R.id.fragment_container, mEpisodesFragment);
             } else {
+                CrashLedger.Log.d(TAG, "LauncherActivity#onCreate: EpisodesFragment already exists, attaching it");
                 ft.attach(mEpisodesFragment);
             }
             ft.commit();
@@ -54,6 +57,7 @@ public class LauncherActivity extends BaseActivity
         Fragment newFragment;
         switch (item.getItemId()) {
             case R.id.action_episode_recaps:
+                CrashLedger.navigationEvent("Nav drawer", "Episode recaps");
                 if (currentFragment instanceof EpisodesFragment) {
                     return true;
                 }
@@ -63,6 +67,7 @@ public class LauncherActivity extends BaseActivity
                 newFragment = mEpisodesFragment;
                 break;
             case R.id.action_wallpapers:
+                CrashLedger.navigationEvent("Nav drawer", "Wallpapers");
                 if (currentFragment instanceof WallpapersFragment) {
                     return true;
                 }

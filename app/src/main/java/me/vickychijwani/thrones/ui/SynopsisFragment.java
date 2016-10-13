@@ -3,9 +3,9 @@ package me.vickychijwani.thrones.ui;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +17,11 @@ import com.squareup.picasso.Picasso;
 import me.vickychijwani.thrones.R;
 import me.vickychijwani.thrones.data.entity.Episode;
 import me.vickychijwani.thrones.network.HboApi;
+import me.vickychijwani.thrones.util.Analytics;
 
 public class SynopsisFragment extends Fragment {
 
     public static final String KEY_EPISODE = "episode";
-    private static final String TAG = "SynopsisFragment";
 
     public static SynopsisFragment newInstance(@NonNull Episode episode) {
         Bundle args = new Bundle();
@@ -43,9 +43,10 @@ public class SynopsisFragment extends Fragment {
 
         Episode episode = getArguments().getParcelable(KEY_EPISODE);
         if (episode == null) {
-            Log.wtf(TAG, "This isn't supposed to happen!");
-            return view;
+            throw new IllegalArgumentException("Received null episode");
         }
+        Analytics.viewSynopsis(episode);
+
         Picasso.with(getActivity())
                 .load(HboApi.getImageUrl(episode.synopsisImage, HboApi.ImageSize.LARGE))
                 .fit()
@@ -63,7 +64,7 @@ public class SynopsisFragment extends Fragment {
         closeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SynopsisFragment.this.getActivity().finish();
+                ActivityCompat.finishAfterTransition(SynopsisFragment.this.getActivity());
             }
         });
 

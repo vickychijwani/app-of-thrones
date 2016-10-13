@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "165722742593",
+    "firebase_url": "https://app-of-thrones.firebaseio.com",
+    "project_id": "app-of-thrones",
+    "storage_bucket": "app-of-thrones.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:165722742593:android:288a32a8fc1aa224",
+        "android_client_info": {
+          "package_name": "me.vickychijwani.thrones"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "165722742593-dj8bfql4u50tlta3s7i81dq25mgjhkb2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCT6-50p7beOoMUDElGpysTl2YD0_z2Ez8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

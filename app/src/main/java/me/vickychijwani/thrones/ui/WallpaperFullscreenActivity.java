@@ -15,6 +15,9 @@ public class WallpaperFullscreenActivity extends BaseActivity {
                 .findFragmentById(R.id.fragment_container);
         if (fragment == null) {
             String url = getIntent().getStringExtra(WallpaperFullscreenFragment.KEY_URL);
+            if (url == null) {
+                throw new IllegalArgumentException("Received null URL");
+            }
             fragment = WallpaperFullscreenFragment.newInstance(url);
             getSupportFragmentManager()
                     .beginTransaction()

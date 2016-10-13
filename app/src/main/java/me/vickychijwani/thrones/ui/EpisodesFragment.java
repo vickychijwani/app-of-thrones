@@ -32,6 +32,7 @@ import me.vickychijwani.thrones.data.ThronesContract;
 import me.vickychijwani.thrones.data.entity.Episode;
 import me.vickychijwani.thrones.data.entity.Season;
 import me.vickychijwani.thrones.network.SyncUtils;
+import me.vickychijwani.thrones.util.CrashLedger;
 
 public class EpisodesFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -76,9 +77,11 @@ public class EpisodesFragment extends Fragment
         }
 
         if (!mDidInitLoader) {
+            CrashLedger.Log.i(TAG, "onCreateView: initializing Loader");
             getLoaderManager().initLoader(EPISODES_LOADER_ID, null, this);
             mDidInitLoader = true;
         } else {
+            CrashLedger.Log.i(TAG, "onCreateView: restarting Loader as it was already initialized");
             getLoaderManager().restartLoader(EPISODES_LOADER_ID, null, this);
         }
 
@@ -93,6 +96,7 @@ public class EpisodesFragment extends Fragment
         super.onResume();
         // courtesy http://stackoverflow.com/a/16703452/504611
         if (!mDidInitLoader) {
+            CrashLedger.Log.i(TAG, "onResume: restarting Loader");
             getLoaderManager().restartLoader(EPISODES_LOADER_ID, null, this);
         }
         mDidInitLoader = false;
@@ -110,6 +114,8 @@ public class EpisodesFragment extends Fragment
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (loader.getId() == EPISODES_LOADER_ID) {
+            CrashLedger.Log.i(TAG, "onLoadFinished: loaded " + cursor.getCount() + " episodes");
+
             @SuppressLint("UseSparseArrays")
             Map<Integer, Season> seasons = new TreeMap<>();
             cursor.moveToPosition(-1);
@@ -135,6 +141,7 @@ public class EpisodesFragment extends Fragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        CrashLedger.Log.w(TAG, "onLoaderReset: clearing UI");
         mSeasonsAdapter.setSeasons(new ArrayList<Season>());
         mSeasonsAdapter.notifyDataSetChanged();
     }

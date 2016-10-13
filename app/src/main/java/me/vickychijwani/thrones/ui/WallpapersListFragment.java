@@ -28,6 +28,7 @@ import me.vickychijwani.thrones.network.BeautifulDeathApi;
 import me.vickychijwani.thrones.network.TvdbApi;
 import me.vickychijwani.thrones.network.WallpaperDataCallback;
 import me.vickychijwani.thrones.util.AppUtils;
+import me.vickychijwani.thrones.util.CrashLedger;
 
 public class WallpapersListFragment extends Fragment {
 
@@ -81,9 +82,9 @@ public class WallpapersListFragment extends Fragment {
 
         String sourceStr = getArguments().getString(KEY_SOURCE);
         if (sourceStr == null) {
-            Log.wtf(TAG, "Couldn't find a valid wallpaper source!");
-            return null;
+            throw new IllegalStateException("No wallpaper source found!");
         }
+        CrashLedger.Log.i(TAG, "Wallpaper source = " + sourceStr);
         Source source = Source.fromString(sourceStr);
         if (source == null) {
             Log.wtf(TAG, "Source enum constructed with Source.fromString() is null! This is a bug!");
@@ -104,6 +105,7 @@ public class WallpapersListFragment extends Fragment {
                 int pos = recyclerView.getChildLayoutPosition(view);
                 if (pos == RecyclerView.NO_POSITION) return;
                 String url = mWallpapersAdapter.getItem(pos);
+                CrashLedger.navigationEvent("Wallpaper list", "View wallpaper: " + url);
                 Intent intent = new Intent(WallpapersListFragment.this.getActivity(),
                         WallpaperFullscreenActivity.class);
                 intent.putExtra(WallpaperFullscreenFragment.KEY_URL, url);

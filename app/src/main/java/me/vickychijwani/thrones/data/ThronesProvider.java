@@ -9,12 +9,13 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.squareup.picasso.Picasso;
 
+import me.vickychijwani.thrones.ThronesApplication;
 import me.vickychijwani.thrones.data.ThronesContract.EpisodeTable;
 import me.vickychijwani.thrones.network.SyncUtils;
+import me.vickychijwani.thrones.util.CrashLedger;
 
 
 public final class ThronesProvider extends ContentProvider {
@@ -35,12 +36,8 @@ public final class ThronesProvider extends ContentProvider {
     @SuppressWarnings("ConstantConditions")
     @Override
     public boolean onCreate() {
-        /**
-         * Doing application initialization here because it's called only once,
-         * on app startup, and *only from the main thread*. This is unlike
-         * Application#onCreate() which is called from every process (e.g.
-         * a SyncAdapter process)
-         */
+        CrashLedger.lifecycleEvent(ThronesProvider.class, "onCreate");
+
         INIT_APP(getContext());
 
         mDbHelper = new DBHelper(getContext());
@@ -48,13 +45,17 @@ public final class ThronesProvider extends ContentProvider {
     }
 
     private static void INIT_APP(@NonNull Context context) {
+        /**
+         * If you want to initialize something ONLY in the main UI process, do it here. If you want
+         * it in ALL processes (sync process, Firebase crash reporter process, etc), do it in
+         * {@link ThronesApplication#onCreate()}.
+         */
         SyncUtils.setupSyncAdapter(context);
         Picasso.setSingletonInstance(new Picasso.Builder(context)
                 .listener(new Picasso.Listener() {
                     @Override
                     public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
-                        Log.e("Picasso", "Failed to load image: " + uri + "\n"
-                                + Log.getStackTraceString(exception));
+                        CrashLedger.reportNonFatal(new ImageLoadFailedException(uri.toString(), exception));
                     }
                 })
                 .build());
@@ -64,7 +65,7 @@ public final class ThronesProvider extends ContentProvider {
     @Override
     public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
-        Log.i(TAG, "[query ] uri: " + uri);
+        CrashLedger.Log.i(TAG, "[query ] uri: " + uri);
         Cursor cursor;
 
         switch (sUriMatcher.match(uri)) {
@@ -82,14 +83,14 @@ public final class ThronesProvider extends ContentProvider {
         //noinspection ConstantConditions
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
-        Log.i(TAG, "[query ] returning " + cursor.getCount() + " result(s)");
+        CrashLedger.Log.i(TAG, "[query ] returning " + cursor.getCount() + " result(s)");
         return cursor;
     }
 
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, ContentValues values) {
-        Log.i(TAG, "[insert] uri: " + uri);
+        CrashLedger.Log.i(TAG, "[insert] uri: " + uri);
         Uri insertedUri = null;
         long insertedId;
 
@@ -120,7 +121,7 @@ public final class ThronesProvider extends ContentProvider {
     @Override
     public int update(@NonNull Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
-        Log.i(TAG, "[update] uri: " + uri);
+        CrashLedger.Log.i(TAG, "[update] uri: " + uri);
         long updatedId;
         int numRowsUpdated;
         switch (sUriMatcher.match(uri)) {

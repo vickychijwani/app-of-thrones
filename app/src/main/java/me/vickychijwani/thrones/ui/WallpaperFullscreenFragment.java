@@ -11,9 +11,9 @@ import android.support.annotation.RequiresPermission;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +24,8 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import me.vickychijwani.thrones.R;
+import me.vickychijwani.thrones.util.Analytics;
+import me.vickychijwani.thrones.util.CrashLedger;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -64,7 +66,7 @@ public class WallpaperFullscreenFragment extends Fragment
             @Override
             public void onClick(View view) {
                 if (getActivity() != null) {
-                    getActivity().onBackPressed();
+                    ActivityCompat.finishAfterTransition(getActivity());
                 }
             }
         });
@@ -73,9 +75,10 @@ public class WallpaperFullscreenFragment extends Fragment
 
         mUrl = getArguments().getString(KEY_URL);
         if (mUrl == null) {
-            Log.wtf(TAG, "This isn't supposed to happen!");
-            return view;
+            throw new IllegalArgumentException("Received null URL");
         }
+        Analytics.viewWallpaper(mUrl);
+
         Picasso.with(getActivity())
                 .load(mUrl)
                 .fit()
@@ -110,6 +113,7 @@ public class WallpaperFullscreenFragment extends Fragment
         boolean missingPermission = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !wallpaperMgr.isWallpaperSupported())
                 || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && !wallpaperMgr.isSetWallpaperAllowed());
         if (missingPermission) {
+            CrashLedger.reportNonFatal(new SetWallpaperFailedException(mUrl, "insufficient permissions"));
             showMessage(R.string.set_wallpaper_no_permission, Snackbar.LENGTH_LONG);
             return;
         }
@@ -153,8 +157,7 @@ public class WallpaperFullscreenFragment extends Fragment
                                 mWallpaperManager.setBitmap(bitmap);
                                 return true;
                             } catch (Exception e) {
-                                Log.e(TAG, "Failed to set wallpaper", e);
-                                return false;
+                                throw new SetWallpaperFailedException(mUrl, e);
                             }
                         }
                     })
@@ -163,15 +166,16 @@ public class WallpaperFullscreenFragment extends Fragment
                     .subscribe(new Action1<Boolean>() {
                         @Override
                         public void call(Boolean success) {
-                            if (success) {
-                                showMessage(R.string.set_wallpaper_succeeded, Snackbar.LENGTH_SHORT);
-                            } else {
-                                showMessage(R.string.set_wallpaper_failed, Snackbar.LENGTH_LONG);
-                            }
+                            Analytics.setWallpaper(mUrl);
+                            showMessage(R.string.set_wallpaper_succeeded, Snackbar.LENGTH_SHORT);
                         }
                     }, new Action1<Throwable>() {
                         @Override
                         public void call(Throwable throwable) {
+                            if (!(throwable instanceof SetWallpaperFailedException)) {
+                                throwable = new SetWallpaperFailedException(mUrl, throwable);
+                            }
+                            CrashLedger.reportNonFatal(throwable);
                             showMessage(R.string.set_wallpaper_failed, Snackbar.LENGTH_LONG);
                         }
                     }, new Action0() {
@@ -184,6 +188,7 @@ public class WallpaperFullscreenFragment extends Fragment
 
         @Override
         public void onBitmapFailed(Drawable errorDrawable) {
+            CrashLedger.reportNonFatal(new SetWallpaperFailedException(mUrl, "onBitmapFailed"));
             showMessage(R.string.set_wallpaper_failed, Snackbar.LENGTH_LONG);
         }
 
