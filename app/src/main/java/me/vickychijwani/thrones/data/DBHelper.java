@@ -58,7 +58,7 @@ final class DBHelper extends SQLiteOpenHelper {
 
     Cursor getAllEpisodes() {
         String sql = "SELECT * FROM " + EpisodeTable.TABLE_NAME
-                + " ORDER BY " + EpisodeTable.COL_SEASON_NUMBER + ", " + EpisodeTable.COL_NUMBER + " ASC";
+                + " ORDER BY " + EpisodeTable.COL_SEASON_NUMBER + " ASC, " + EpisodeTable.COL_NUMBER + " ASC";
         return getReadableDatabase().rawQuery(sql, null);
     }
 
