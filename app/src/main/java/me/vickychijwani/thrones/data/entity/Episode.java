@@ -1,5 +1,6 @@
 package me.vickychijwani.thrones.data.entity;
 
+import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -68,9 +69,11 @@ public final class Episode implements Parcelable {
         }
     };
 
+    @SuppressLint("DefaultLocale")
     @Override
     public String toString() {
-        return "Episode " + seasonNumber + "x" + ((number >= 10) ? number : ("0"+number));
+        String paddedEpisodeNum = (number >= 10) ? "" + number : ("0" + number);
+        return String.format("%1$dx%2$s - %3$s", seasonNumber, paddedEpisodeNum, title);
     }
 
 }

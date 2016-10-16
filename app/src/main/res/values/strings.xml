@@ -22,6 +22,9 @@
     <string name="sync_success">Sync finished</string>
     <string name="sync_error">Error while syncing data</string>
 
+    <!-- home-screen widget -->
+    <string name="widget_title">Recap the last episode</string>
+
     <!-- generic -->
     <string name="back">Back</string>
 
