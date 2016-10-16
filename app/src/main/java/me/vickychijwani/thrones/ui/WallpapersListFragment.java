@@ -125,8 +125,8 @@ public class WallpapersListFragment extends Fragment {
         recyclerView.setAdapter(mWallpapersAdapter);
 
         final int desiredColumnWidth = getResources().getDimensionPixelSize(source.getDesiredColumnWidth());
-        int gridWidth = AppUtils.getScreenWidth(getActivity());
-        int optimalColumnCount = Math.max(Math.round((1f*gridWidth) / desiredColumnWidth), 1);
+        int optimalColumnCount = AppUtils.getOptimalColumnCountForDesiredColumnWidth(getActivity(),
+                desiredColumnWidth);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), optimalColumnCount));
 
         // don't request if the fragment was just destroyed and re-created

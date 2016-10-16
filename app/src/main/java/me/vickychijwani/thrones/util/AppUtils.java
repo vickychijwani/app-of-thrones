@@ -1,5 +1,6 @@
 package me.vickychijwani.thrones.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -82,7 +83,13 @@ public final class AppUtils {
         return paintDrawable;
     }
 
-    public static int getScreenWidth(@NonNull Context context) {
+    public static int getOptimalColumnCountForDesiredColumnWidth(@NonNull Activity activity,
+                                                                 int desiredColumnWidth) {
+        int gridWidth = AppUtils.getScreenWidth(activity);
+        return Math.max(Math.round((1f*gridWidth) / desiredColumnWidth), 1);
+    }
+
+    private static int getScreenWidth(@NonNull Context context) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         wm.getDefaultDisplay().getMetrics(displayMetrics);

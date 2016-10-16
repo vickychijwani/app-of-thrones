@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- special padding to use when drawing under the system bars -->
+    <!-- zero these values since we're not drawing the system bar backgrounds in landscape -->
+    <dimen name="padding_status_bar">0dp</dimen>
+    <dimen name="padding_status_bar_plus_large">@dimen/padding_large</dimen>
+    <dimen name="padding_navigation_bar">0dp</dimen>
+
+    <!-- view dimensions and spacing -->
+    <dimen name="toolbar_height">48dp</dimen>
+
+</resources>

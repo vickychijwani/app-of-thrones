@@ -7,7 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -39,7 +39,7 @@ public class EpisodesInSeasonFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_episodes_in_season, container, false);
-        final RecyclerView episodesRecyclerView = (RecyclerView) view.findViewById(R.id.episodes_list);
+        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.episodes_list);
 
         List<Episode> episodes = getArguments().getParcelableArrayList(KEY_EPISODES);
         if (episodes == null) {
@@ -48,7 +48,7 @@ public class EpisodesInSeasonFragment extends Fragment {
         View.OnClickListener episodeClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int pos = episodesRecyclerView.getChildLayoutPosition(view);
+                int pos = recyclerView.getChildLayoutPosition(view);
                 if (pos == RecyclerView.NO_POSITION) return;
                 Episode episode = mEpisodesAdapter.getItem(pos);
                 CrashLedger.navigationEvent("Episode list", "Synopsis for: " + episode.toString());
@@ -61,8 +61,12 @@ public class EpisodesInSeasonFragment extends Fragment {
         };
         mEpisodesAdapter = new EpisodesAdapter(getActivity(), episodes,
                 Picasso.with(getActivity()), episodeClickListener);
-        episodesRecyclerView.setAdapter(mEpisodesAdapter);
-        episodesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(mEpisodesAdapter);
+
+        final int desiredColumnWidth = getResources().getDimensionPixelSize(R.dimen.desired_episode_width);
+        int optimalColumnCount = AppUtils.getOptimalColumnCountForDesiredColumnWidth(getActivity(),
+                desiredColumnWidth);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), optimalColumnCount));
 
         return view;
     }
