@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:theme="@style/AppTheme.AppBarOverlay"
+        android:theme="@style/AppTheme"
         app:headerLayout="@layout/nav_header"
         app:itemIconTint="@color/text_primary"
         app:itemTextColor="@color/text_primary"
