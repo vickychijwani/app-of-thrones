@@ -58,11 +58,10 @@
                 />
         </activity>
 
-        <!-- NOTE: if you change the content authority, remember to find-and-replace it elsewhere! -->
-        <!-- Can't use @string resource as explained here: http://stackoverflow.com/a/6670656/504611 -->
+        <!-- NOTE: Content Authority is also defined in build.gradle -->
         <provider
             android:name=".data.ThronesProvider"
-            android:authorities="me.vickychijwani.thrones.provider"
+            android:authorities="${applicationId}.provider"
             android:exported="false"
             android:syncable="true"
             />

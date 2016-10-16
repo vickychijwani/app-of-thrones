@@ -3,16 +3,15 @@ package me.vickychijwani.thrones.data;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import me.vickychijwani.thrones.BuildConfig;
+
 public final class ThronesContract {
 
     private static final String CONTENT_TYPE_BASE = "vnd.android.cursor.dir/vnd.me.vickychijwani.thrones.";
     private static final String CONTENT_ITEM_TYPE_BASE = "vnd.android.cursor.item/vnd.me.vickychijwani.thrones.";
 
-    /**
-     * NOTE: if you change the content authority, remember to find-and-replace it elsewhere!
-     * Can't use @string resource as explained here: http://stackoverflow.com/a/6670656/504611
-     */
-    public static final String CONTENT_AUTHORITY = "me.vickychijwani.thrones.provider";
+    // NOTE: Content Authority is defined in build.gradle
+    public static final String CONTENT_AUTHORITY = BuildConfig.CONTENT_AUTHORITY;
 
     private static final Uri CONTENT_URI_BASE = Uri.parse("content://" + CONTENT_AUTHORITY);
 

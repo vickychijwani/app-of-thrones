@@ -21,9 +21,28 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+
+            // BuildConfig fields for ContentProvider authority and SyncAdapter account type
+            buildConfigField "String", "SYNC_ACCOUNT_TYPE", "\"" + defaultConfig.applicationId + applicationIdSuffix + ".account\""
+            buildConfigField "String", "CONTENT_AUTHORITY", "\"" + defaultConfig.applicationId + applicationIdSuffix + ".provider\""
+
+            // @string resources for ContentProvider authority and SyncAdapter account type
+            resValue "string", "sync_account_type", defaultConfig.applicationId + applicationIdSuffix + ".account"
+            resValue "string", "content_authority", defaultConfig.applicationId + applicationIdSuffix + ".provider"
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            // BuildConfig fields for ContentProvider authority and SyncAdapter account type
+            buildConfigField "String", "SYNC_ACCOUNT_TYPE", "\"" + defaultConfig.applicationId + ".account\""
+            buildConfigField "String", "CONTENT_AUTHORITY", "\"" + defaultConfig.applicationId + ".provider\""
+
+            // @string resources for ContentProvider authority and SyncAdapter account type
+            resValue "string", "sync_account_type", defaultConfig.applicationId + ".account"
+            resValue "string", "content_authority", defaultConfig.applicationId + ".provider"
         }
     }
 }
