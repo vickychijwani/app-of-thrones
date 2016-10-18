@@ -30,10 +30,8 @@
             android:layout_marginLeft="@dimen/padding_large"
             android:layout_marginRight="@dimen/padding_large"
             android:layout_marginStart="@dimen/padding_large"
-            android:fontFamily="sans-serif-smallcaps"
             android:text="@string/widget_title"
-            android:textColor="@color/text_primary"
-            android:textSize="16sp"
+            android:textAppearance="@style/TextAppearance.Subhead.Smallcaps"
             />
 
         <TextView
@@ -45,10 +43,7 @@
             android:layout_marginLeft="@dimen/padding_large"
             android:layout_marginRight="@dimen/padding_large"
             android:layout_marginStart="@dimen/padding_large"
-            android:fontFamily="sans-serif-condensed"
-            android:textColor="@color/text_primary"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.Headline.CondensedBold"
             tools:text="6x10 - The Winds of Winter"
             />
 

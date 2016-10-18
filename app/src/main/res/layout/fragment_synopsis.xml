@@ -47,9 +47,7 @@
             android:layout_marginRight="@dimen/padding_large"
             android:layout_marginStart="@dimen/padding_large"
             android:layout_marginTop="@dimen/padding_large"
-            android:fontFamily="sans-serif-condensed"
-            android:textColor="@color/text_primary"
-            android:textSize="20sp"
+            android:textAppearance="@style/TextAppearance.Title.Condensed"
             tools:text="Season 1, Episode 1"
             />
 
@@ -64,10 +62,7 @@
             android:layout_marginLeft="@dimen/padding_large"
             android:layout_marginRight="@dimen/padding_large"
             android:layout_marginStart="@dimen/padding_large"
-            android:fontFamily="sans-serif-condensed"
-            android:textColor="@color/text_primary"
-            android:textSize="34sp"
-            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.Display1.CondensedBold"
             tools:text="Winter is Coming"
             />
 
@@ -84,8 +79,7 @@
             android:layout_marginStart="@dimen/padding_large"
             android:layout_marginTop="@dimen/padding_large"
             android:lineSpacingMultiplier="1.15"
-            android:textColor="@color/text_primary"
-            android:textSize="15sp"
+            android:textAppearance="@style/TextAppearance.Body1"
             tools:text="Three men of the Night's Watch ride out beyond the Wall after receiving reports that lawless tribes of wildings have been sighted near the border. Will, a slight ranger, verifies this information when he finds the dismembered corpses of the group's men, women and children scattered in a frozen glade. He carries the news back to his comrades, Gared and Ser Waymar Royce, but before they can investigate further, the bodies disappear. As Will searches the area, the forest fills with Royce's screams and the gallop of the group's bolting horses. Will races through the trees and comes face to face with Gared – moments before a shadowy creature with glowing blue eyes severs his friend's head and tosses it at Will's feet."
             />
 

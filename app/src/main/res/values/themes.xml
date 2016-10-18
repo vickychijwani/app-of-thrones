@@ -7,12 +7,16 @@
         <item name="colorPrimaryDark">@color/primaryDark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="android:windowBackground">@color/background</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
 
         <!-- toolbar -->
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="actionBarSize">@dimen/toolbar_height</item>
+
+        <!-- default widget styles -->
+        <item name="android:textViewStyle">@style/DefaultTextView</item>
     </style>
 
     <style name="AppTheme.NoActionBar.Transparent">
