@@ -6,6 +6,21 @@ buildscript {
 
 apply plugin: 'com.android.application'
 
+def getProp(String filename, String propName) {
+    def propsFile = rootProject.file(filename)
+    if (propsFile.exists()) {
+        def props = new Properties()
+        props.load(new FileInputStream(propsFile))
+        if (props[propName] != null) {
+            return props[propName]
+        } else {
+            throw new IllegalArgumentException("No such property " + propName + " in file " + filename);
+        }
+    } else {
+        throw new IllegalArgumentException(filename + " does not exist!");
+    }
+}
+
 android {
     compileSdkVersion 24
     buildToolsVersion '24.0.2'
@@ -19,30 +34,32 @@ android {
 
         // enable support for vector drawables on API < 21
         vectorDrawables.useSupportLibrary = true
+
+        buildConfigField "String", "TVDB_API_KEY", "\"${getProp("local.properties", "tvdb_api_key")}\""
     }
     buildTypes {
         debug {
             applicationIdSuffix '.debug'
 
             // BuildConfig fields for ContentProvider authority and SyncAdapter account type
-            buildConfigField "String", "SYNC_ACCOUNT_TYPE", "\"" + defaultConfig.applicationId + applicationIdSuffix + ".account\""
-            buildConfigField "String", "CONTENT_AUTHORITY", "\"" + defaultConfig.applicationId + applicationIdSuffix + ".provider\""
+            buildConfigField "String", "SYNC_ACCOUNT_TYPE", "\"${defaultConfig.applicationId}${applicationIdSuffix}.account\""
+            buildConfigField "String", "CONTENT_AUTHORITY", "\"${defaultConfig.applicationId}${applicationIdSuffix}.provider\""
 
             // @string resources for ContentProvider authority and SyncAdapter account type
-            resValue "string", "sync_account_type", defaultConfig.applicationId + applicationIdSuffix + ".account"
-            resValue "string", "content_authority", defaultConfig.applicationId + applicationIdSuffix + ".provider"
+            resValue "string", "sync_account_type", "${defaultConfig.applicationId}${applicationIdSuffix}.account"
+            resValue "string", "content_authority", "${defaultConfig.applicationId}${applicationIdSuffix}.provider"
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             // BuildConfig fields for ContentProvider authority and SyncAdapter account type
-            buildConfigField "String", "SYNC_ACCOUNT_TYPE", "\"" + defaultConfig.applicationId + ".account\""
-            buildConfigField "String", "CONTENT_AUTHORITY", "\"" + defaultConfig.applicationId + ".provider\""
+            buildConfigField "String", "SYNC_ACCOUNT_TYPE", "\"${defaultConfig.applicationId}.account\""
+            buildConfigField "String", "CONTENT_AUTHORITY", "\"${defaultConfig.applicationId}.provider\""
 
             // @string resources for ContentProvider authority and SyncAdapter account type
-            resValue "string", "sync_account_type", defaultConfig.applicationId + ".account"
-            resValue "string", "content_authority", defaultConfig.applicationId + ".provider"
+            resValue "string", "sync_account_type", "${defaultConfig.applicationId}.account"
+            resValue "string", "content_authority", "${defaultConfig.applicationId}.provider"
         }
     }
 }

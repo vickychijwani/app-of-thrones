@@ -137,10 +137,10 @@ public class WallpapersListFragment extends Fragment {
                     BeautifulDeathApi.fetchAllPosters(dataCallback);
                     break;
                 case THE_TVDB_PORTRAIT:
-                    TvdbApi.getInstance(getActivity()).fetchAllPosters(dataCallback);
+                    TvdbApi.getInstance().fetchAllPosters(dataCallback);
                     break;
                 case THE_TVDB_LANDSCAPE:
-                    TvdbApi.getInstance(getActivity()).fetchAllFanart(dataCallback);
+                    TvdbApi.getInstance().fetchAllFanart(dataCallback);
                     break;
                 default:
                     Log.wtf(TAG, "You forgot to handle a wallpaper source: " + source.toString());

@@ -1,7 +1,6 @@
 package me.vickychijwani.thrones.network;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 
@@ -17,7 +16,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import me.vickychijwani.thrones.R;
+import me.vickychijwani.thrones.BuildConfig;
 import me.vickychijwani.thrones.network.entity.TvdbApiKey;
 import me.vickychijwani.thrones.network.entity.TvdbImage;
 import me.vickychijwani.thrones.network.entity.TvdbImageList;
@@ -71,9 +70,13 @@ public class TvdbApi {
     private Map<ImageKeyType, Boolean> mIsSyncOngoing = new HashMap<>();
     private Map<ImageKeyType, WallpaperDataCallback> mDeferredRequests = new TreeMap<>();
 
-    public static TvdbApi getInstance(@NonNull Context context) {
+    public static TvdbApi getInstance() {
         if (sApi == null) {
-            sApi = new TvdbApi(context.getString(R.string.tvdb_api_key));
+            //noinspection ConstantConditions
+            if (BuildConfig.TVDB_API_KEY == null) {
+                throw new IllegalArgumentException("TVDB API key is null!");
+            }
+            sApi = new TvdbApi(BuildConfig.TVDB_API_KEY);
         }
         return sApi;
     }
