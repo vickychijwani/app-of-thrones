@@ -7,6 +7,7 @@
     <color name="background">@color/primaryDark</color>
 
     <color name="text_primary">@android:color/white</color>
+    <color name="text_secondary">#999</color>
 
     <color name="wallpaper_toolbar">#4C000000</color>
 

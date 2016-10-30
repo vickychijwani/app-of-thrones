@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name" translatable="false">App of Thrones</string>
+
+    <!-- about -->
+    <string name="vicky_chijwani" translatable="false">Vicky Chijwani</string>
+    <string name="email_subject">%s - Feedback</string>
+
+</resources>

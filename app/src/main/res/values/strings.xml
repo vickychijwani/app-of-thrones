@@ -1,7 +1,5 @@
 <resources>
 
-    <string name="app_name">App of Thrones</string>
-
     <!-- navigation menu -->
     <string name="episode_recaps">Episode Recaps</string>
     <string name="wallpapers">Wallpapers</string>
@@ -25,8 +23,29 @@
     <!-- home-screen widget -->
     <string name="widget_title">Recap the last episode</string>
 
+    <!-- about -->
+    <string name="about">About</string>
+
+    <string name="version">Version</string>
+    <string name="version_unknown">Unknown</string>
+    <string name="open_source_libs">Open-source libraries</string>
+
+    <string name="category_developer">Developer</string>
+    <string name="fork_on_github">Fork on Github</string>
+    <string name="follow_on_twitter">Follow on Twitter</string>
+    <string name="visit_website">Visit website</string>
+
+    <string name="category_support_development">Support development</string>
+    <string name="report_bugs">Report bugs</string>
+    <string name="report_bugs_subtitle">Report bugs or propose new features</string>
+    <string name="play_store">Rate on Play Store</string>
+    <string name="play_store_subtitle">Thanks for your support!</string>
+    <string name="email_developer">Email the developer</string>
+    <string name="email_developer_subtitle">Contact the developer directly</string>
+
     <!-- generic -->
     <string name="back">Back</string>
+    <string name="intent_no_apps">There are no apps that can handle this action</string>
 
     <!-- content descriptions -->
     <string name="cdesc_episode_image">Episode image</string>

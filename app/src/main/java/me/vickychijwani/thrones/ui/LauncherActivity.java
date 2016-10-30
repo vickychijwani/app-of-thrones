@@ -1,5 +1,6 @@
 package me.vickychijwani.thrones.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -77,7 +78,8 @@ public class LauncherActivity extends BaseActivity
                 newFragment = mWallpapersFragment;
                 break;
             default:
-                return false;
+                // fall back to handling for non-navigation actions
+                return handleNonNavigationAction(item);
         }
         //noinspection ConstantConditions
         if (newFragment == null) {
@@ -93,6 +95,17 @@ public class LauncherActivity extends BaseActivity
         }
         ft.commit();
         return true;
+    }
+
+    private boolean handleNonNavigationAction(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                Intent aboutIntent = new Intent(this, AboutActivity.class);
+                startActivity(aboutIntent);
+                return true;
+            default:
+                return false;
+        }
     }
 
 }

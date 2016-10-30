@@ -1,16 +1,111 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- default styles, used automatically -->
+    <!-- default widget styles, used automatically -->
     <style name="DefaultTextView" parent="android:Widget.TextView">
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
-    <!-- custom styles, used explicitly -->
+    <!-- custom widget styles, used explicitly -->
+    <style name="MyToolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:theme">@style/AppTheme.AppBarOverlay</item>
+        <item name="popupTheme">@style/AppTheme.PopupOverlay</item>
+    </style>
+
     <style name="MyTabLayout" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorHeight">4dp</item>
     </style>
 
-    <!-- TextAppearance -->
+    <style name="MyCardView" parent="@style/CardView.Dark">
+        <item name="cardBackgroundColor">?attr/colorPrimary</item>
+        <item name="cardPreventCornerOverlap">false</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:stateListAnimator" tools:targetApi="lollipop">@anim/lift_up</item>
+    </style>
+
+
+
+    <!-- About screen -->
+    <style name="AboutCardStyle" parent="MyCardView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/padding_default</item>
+    </style>
+
+    <style name="AboutLayoutStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingTop">@dimen/padding_default</item>
+        <item name="android:paddingBottom">@dimen/padding_default</item>
+    </style>
+
+    <style name="AboutCategoryHeadingStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_marginLeft">@dimen/padding_large</item>
+        <item name="android:layout_marginStart" tools:targetApi="jelly_bean_mr1">@dimen/padding_large</item>
+        <item name="android:layout_marginRight">@dimen/padding_large</item>
+        <item name="android:layout_marginEnd" tools:targetApi="jelly_bean_mr1">@dimen/padding_large</item>
+        <item name="android:textColor">@color/text_secondary</item> <!-- text color doesn't work if moved to textAppearance - why?! -->
+        <item name="android:textAppearance">@style/TextAppearance.Body2.Smallcaps</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="AboutItemStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/padding_large</item>
+        <item name="android:paddingStart" tools:targetApi="jelly_bean_mr1">@dimen/padding_large</item>
+        <item name="android:paddingRight">@dimen/padding_large</item>
+        <item name="android:paddingEnd" tools:targetApi="jelly_bean_mr1">@dimen/padding_large</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:clickable">true</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="AboutSubItemStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:paddingTop">@dimen/padding_default</item>
+        <item name="android:paddingBottom">@dimen/padding_default</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="AboutIconStyle">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_marginTop">@dimen/padding_inline</item>
+        <item name="android:layout_marginBottom">@dimen/padding_inline</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginRight">@dimen/padding_large</item>
+        <item name="android:layout_marginEnd" tools:targetApi="jelly_bean_mr1">@dimen/padding_large</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:tint">@color/text_primary</item>
+    </style>
+
+    <style name="AboutTitleStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@style/TextAppearance.Body1</item>
+    </style>
+
+    <style name="AboutTextStyle" parent="AboutTitleStyle">
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="AboutSubtitleStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_secondary</item> <!-- text color doesn't work if moved to textAppearance - why?! -->
+        <item name="android:textAppearance">@style/TextAppearance.Caption</item>
+    </style>
+
+
+
+    <!-- Material Design standard typefaces with minor modifications -->
     <style name="TextAppearance.Display1" parent="TextAppearance.AppCompat.Display1">
     </style>
 
@@ -41,7 +136,17 @@
         <item name="android:fontFamily">sans-serif-smallcaps</item>
     </style>
 
+    <style name="TextAppearance.Body2" parent="TextAppearance.AppCompat.Body2">
+    </style>
+
+    <style name="TextAppearance.Body2.Smallcaps" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:fontFamily">sans-serif-smallcaps</item>
+    </style>
+
     <style name="TextAppearance.Body1" parent="TextAppearance.AppCompat.Body1">
+    </style>
+
+    <style name="TextAppearance.Caption" parent="TextAppearance.AppCompat.Caption">
     </style>
 
 </resources>

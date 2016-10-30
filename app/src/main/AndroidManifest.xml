@@ -58,6 +58,22 @@
                 />
         </activity>
 
+        <activity
+            android:name=".ui.AboutActivity"
+            android:parentActivityName=".ui.LauncherActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.LauncherActivity"/>
+        </activity>
+
+        <activity
+            android:name=".ui.OpenSourceLibsActivity"
+            android:parentActivityName=".ui.AboutActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.AboutActivity"/>
+        </activity>
+
         <!-- NOTE: Content Authority is also defined in build.gradle -->
         <provider
             android:name=".data.ThronesProvider"

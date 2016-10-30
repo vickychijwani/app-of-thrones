@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -79,6 +80,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onBackPressed();
         CrashLedger.lifecycleEvent(this.getClass(), "onBackPressed");
     }
+
+
+    /* Utility methods for derived classes */
+    protected void openUrl(String url) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
+
+
 
     private void handleSyncStatus(@NonNull String syncStatus) {
         CrashLedger.Log.i(TAG, "BaseActivity received sync status = " + syncStatus);

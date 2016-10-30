@@ -15,6 +15,7 @@
 
     <!-- view dimensions and spacing -->
     <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="toolbar_elevation">4dp</dimen>
     <dimen name="tabbar_height">48dp</dimen>
     <dimen name="desired_episode_width">320dp</dimen>
     <dimen name="desired_wallpaper_width_portrait">200dp</dimen>
